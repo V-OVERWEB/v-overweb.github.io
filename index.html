@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>OVERWEB frontend</title>
+    <link rel="stylesheet" href="./styles/neon.css">
+    <link rel="stylesheet" href="./styles/rain.css">
+    <link rel="stylesheet" href="./styles/main.css">
+    <link rel="stylesheet" href="./styles/cyberBg.css">
+    <link rel="stylesheet" href="./styles/reviews.css">
+    <link rel="stylesheet" href="./styles/contact.css">
+    <link rel="stylesheet" href="./styles/services.css">
+    <link rel="stylesheet" href="./styles/header.css">
+    <link rel="stylesheet" href="./styles/neon2.css">
+    <link rel="stylesheet" href="./styles/about.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+</head>
+<body>
+    <div id="canvas-fallback">
+        <div class="fallback-content">
+            <div class="fallback-spinner"></div>
+            <div class="fallback-text">
+                INITIALIZING 3D<span class="fallback-dots">...</span>
+            </div>
+        </div>
+    </div>
+
+    <header class="matrix-header" id="matrixHeader">
+        <div class="header__container">
+            <div class="header__logo-container">
+                <img src="./images/logo.jpg" alt="" style="width: 39px;">
+                <a href="#" class="header__logo" id="logoLink">
+                    <span class="logo__bracket">&lt;</span>
+                    <span class="logo__text">OVERWEB</span>
+                    <span class="logo__bracket">/&gt;</span>
+                    <span class="logo__cursor">_</span>
+                </a>
+            </div>
+
+            <div class="header__burger" id="burgerMenu">
+                <span class="burger__line"></span>
+                <span class="burger__line"></span>
+                <span class="burger__line"></span>
+            </div>
+
+            <nav class="header__nav" id="mainNav">
+                <a href="#home" class="nav__link" data-section="home">
+                    <span class="link__symbol">[</span>
+                    <span>Главная</span>
+                    <span class="link__symbol">]</span>
+                </a>
+                <a href="#about" class="nav__link" data-section="about">
+                    <span class="link__symbol">&lt;</span>
+                    <span>Обо мне</span>
+                    <span class="link__symbol">/&gt;</span>
+                </a>
+                <a href="#services" class="nav__link" data-section="services">
+                    <span class="link__symbol">&lt;</span>
+                    <span>Услуги</span>
+                    <span class="link__symbol">/&gt;</span>
+                </a>
+                <a href="#reviews" class="nav__link" data-section="reviews">
+                    <span class="link__symbol">{</span>
+                    <span>Отзывы</span>
+                    <span class="link__symbol">}</span>
+                </a>
+                <a href="#contacts" class="nav__link" data-section="contacts">
+                    <span class="link__symbol">(</span>
+                    <span>Контакты</span>
+                    <span class="link__symbol">)</span>
+                </a>
+            </nav>
+        </div>
+        <div class="header__progress" id="progressBar"></div>
+    </header>
+
+    <div class="block block__first">
+        <div id="canvas-container"></div>
+        <div class="scroll-area"></div>
+        <div class="pixel-overlay"></div>
+        <div class="pixel-blur"></div>
+        <div class="crt-scan"></div>
+    </div>
+    
+    
+    <div class="block block__about">
+        <div data-usal="fade duration-500" class="about-content">
+            <div class="title-container">
+                <h1 class="title-text" data-text="Обо мне">Обо мне</h1>
+            </div>
+
+            <div class="about__container">
+                <div data-usal="flip zoom-in duration-500" class="about__item">
+                    <div class="about__icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="5vh" height="5vh" viewBox="0 0 2048 2048"><path fill="currentColor" d="M2048 384v1280H0V384h640V256q0-27 10-50t27-40t41-28t50-10h512q27 0 50 10t40 27t28 41t10 50v128zm-1280 0h512V256H768zM128 512v185l640 319V896h512v120l640-319V512zm768 512v128h256v-128zm1024 512V839l-640 321v120H768v-120L128 839v697z"/></svg>
+                    </div>
+                    <h2>Опыт работы</h2>
+                    <div class="about__timeline">
+                        <div class="timeline-item">
+                        <div class="timeline-item">
+                            <span class="timeline-year">2024</span>
+                            <span class="timeline-title">Верстальщик / Junior Frontend</span>
+                            <p class="timeline-desc">Вёрстка лендингов, интернет-магазинов, создание анимаций и интеграция с CRM.</p>
+                        </div>
+                            <span class="timeline-year">2024</span>
+                            <span class="timeline-title">Frontend-разработчик (Freelance)</span>
+                            <p class="timeline-desc">Разработка и поддержка сайтов для малого и среднего бизнеса. Создание адаптивных, быстрых и интерактивных веб-приложений.</p>
+                        </div>
+                        <div class="timeline-item">
+                            <span class="timeline-year">2024 — 2026</span>
+                            <span class="timeline-title">VUE.js NUXT разработчик</span>
+                            <p class="timeline-desc">Реализация 10+ коммерческих проектов на Vue.js и Nuxt (лендинги, интернет-магазины, админ-панели, статейные сайты). Наставничество младших разработчиков и код-ревью.</p>
+                        </div>
+                    </div>
+                </div>  
+
+                <div data-usal="flip zoom-in duration-500" class="about__item">
+                    <div class="about__icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="5vh" height="5vh" viewBox="0 0 24 24"><path fill="currentColor" d="M20.93 3.07c-1.27-1.27-3.42-1.42-6.06-.4c-.94.36-1.9.86-2.87 1.46c-.97-.61-1.94-1.1-2.87-1.46c-2.63-1.01-4.79-.87-6.06.4s-1.42 3.42-.4 6.06c.36.94.86 1.9 1.46 2.87c-.61.97-1.1 1.94-1.46 2.87c-1.01 2.63-.87 4.79.4 6.06c.71.71 1.7 1.07 2.89 1.07c.94 0 2.01-.22 3.17-.67c.94-.36 1.9-.86 2.87-1.46c.97.61 1.94 1.1 2.87 1.46c1.16.45 2.23.67 3.17.67c1.19 0 2.18-.36 2.89-1.07c1.27-1.27 1.42-3.42.4-6.06c-.36-.94-.86-1.9-1.46-2.87c.61-.97 1.1-1.94 1.46-2.87c1.01-2.63.87-4.79-.4-6.06M4.54 8.41c-.69-1.8-.71-3.27-.05-3.93c.32-.32.83-.48 1.48-.48c.68 0 1.52.18 2.44.53c.58.22 1.18.51 1.79.85a26.6 26.6 0 0 0-4.81 4.81c-.34-.61-.63-1.2-.85-1.79ZM12 6.54A24.1 24.1 0 0 1 17.46 12A24.1 24.1 0 0 1 12 17.46A24.1 24.1 0 0 1 6.54 12A24.1 24.1 0 0 1 12 6.54M8.41 19.46c-1.8.69-3.27.71-3.93.05s-.64-2.13.05-3.93c.22-.58.51-1.18.85-1.79a26.6 26.6 0 0 0 4.81 4.81c-.61.34-1.2.63-1.79.85Zm11.05-3.88c.69 1.8.71 3.27.05 3.93s-2.13.64-3.93-.05c-.58-.22-1.18-.51-1.79-.85a26.6 26.6 0 0 0 4.81-4.81c.34.61.63 1.2.85 1.79Zm0-7.18c-.22.58-.51 1.18-.85 1.79a26.6 26.6 0 0 0-4.81-4.81c.61-.34 1.2-.63 1.79-.85c.92-.35 1.76-.53 2.44-.53s1.16.16 1.49.48c.66.66.64 2.13-.05 3.93Z"/><path fill="currentColor" d="M13.77 13.77c.98-.98.98-2.56 0-3.54s-2.56-.98-3.54 0s-.98 2.56 0 3.54s2.56.98 3.54 0"/></svg>
+                    </div>
+                    <h2>Технологии</h2>
+                    <div class="about__skills">
+                        <span class="skill-tag">HTML5</span>
+                        <span class="skill-tag">CSS3</span>
+                        <span class="skill-tag">SCSS/SASS</span>
+                        <span class="skill-tag">JavaScript (ES6+)</span>
+                        <span class="skill-tag">Vue.js / Nuxt.js</span>
+                        <span class="skill-tag">Vite</span>
+                        <span class="skill-tag">Three.js / 3D</span>
+                        <span class="skill-tag">Figma (UI/UX)</span>
+                        <span class="skill-tag">Photoshop</span>
+                        <span class="skill-tag">Git / GitHub</span>
+                        <span class="skill-tag">REST API</span>
+                    </div>
+                </div>
+
+                <div data-usal="flip zoom-in duration-500" class="about__item">
+                    <div class="about__icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="5vh" height="5vh" viewBox="0 0 512 512"><path fill="currentColor" d="m305.975 298.814l22.704 2.383V486l-62.712-66.965V312.499l18.214 8.895zm-99.95 0l-22.716 2.383V486l62.711-66.965V312.499l-18.213 8.895zm171.98-115.78l7.347 25.574l-22.055 14.87l-1.847 26.571l-25.81 6.425l-10.803 24.314l-26.46-2.795l-18.475 19.087L256 285.403l-23.902 11.677l-18.475-19.15l-26.46 2.795l-10.803-24.313l-25.81-6.363l-1.847-26.534l-22.118-14.92l7.348-25.573l-15.594-21.544l15.644-21.52l-7.398-25.523l22.068-14.87L150.5 73.03l25.86-6.362l10.803-24.313l26.46 2.794L232.098 26L256 37.677L279.902 26l18.475 19.149l26.46-2.794l10.803 24.313l25.81 6.425l1.847 26.534l22.055 14.87l-7.347 25.574l15.656 21.407zm-49.214-21.556a72.242 72.242 0 1 0-72.242 72.242a72.355 72.355 0 0 0 72.242-72.242m-72.242-52.283a52.282 52.282 0 1 0 52.282 52.283a52.395 52.395 0 0 0-52.282-52.245z"/></svg>
+                    </div>
+                    <h2>Достижения</h2>
+                    <div class="about__stats">
+                        <div class="stat-item">
+                            <span class="stat-number">15+</span>
+                            <span class="stat-label">Завершённых проектов</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">100%</span>
+                            <span class="stat-label">Положительных отзывов</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">50+</span>
+                            <span class="stat-label">Довольных клиентов</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">24/7</span>
+                            <span class="stat-label">На связи</span>
+                        </div>
+                    </div>
+                </div>  
+
+                <div data-usal="flip zoom-in duration-500" class="about__item">
+                    <div class="about__icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="5vh" height="5vh" viewBox="0 0 16 16"><path fill="currentColor" fill-rule="evenodd" d="M.573 4.1a.999.999 0 0 0 0 1.808l1.43.675v3.92c0 .742.241 1.57.944 2.08c.886.64 2.5 1.42 5.06 1.42s4.17-.785 5.06-1.42c.703-.508.944-1.33.944-2.08v-3.92l1-.473v4.39a.5.5 0 0 0 1 0V5a1 1 0 0 0-.572-.904l-5.72-2.7a4 4 0 0 0-3.42 0l-5.72 2.7zm2.43 6.4V7.05l3.29 1.56a4 4 0 0 0 3.42 0l3.29-1.56v3.45c0 .556-.18 1.01-.53 1.26c-.724.523-2.13 1.24-4.47 1.24s-3.75-.712-4.47-1.24c-.349-.252-.529-.709-.529-1.26zm3.72-8.2a2.99 2.99 0 0 1 2.56 0l5.72 2.7l-5.72 2.7a2.99 2.99 0 0 1-2.56 0L1.003 5z" clip-rule="evenodd"/></svg>
+                    </div>
+                    <h2>Образование</h2>
+                    <div class="about__education">
+                        <div class="edu-item">
+                            <span class="edu-year">2020 — 2024</span>
+                            <span class="edu-degree">Автоматизация</span>
+                            <p class="edu-place">Бакалавриат</p>
+                        </div>
+                        <div class="edu-item">
+                            <span class="edu-year">2024</span>
+                            <span class="edu-degree">3 курса - HTML и CSS, JS, Vue</span>
+                            <p class="edu-place">PurpleSchool / Антон Ларичев</p>
+                        </div>
+                        <div class="edu-item">
+                            <span class="edu-year">2024</span>
+                            <span class="edu-degree">Учебник по JS, React</span>
+                            <p class="edu-place">Code.mu</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="block block__second">
+        
+        <div data-usal="fade duration-500" class="content">
+            <div class="title-container">
+                <h1 class="title-text" data-text="Что я могу?">Что я могу?</h1>
+            </div>
+            <div class="rain"></div>
+            <div class="content__container">
+                <div data-usal="flip zoom-in duration-500" class="content__item">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="10vh" height="10vh" viewBox="0 0 24 24"><path fill="currentColor" d="M11.962 21q-1.839 0-3.471-.71q-1.633-.711-2.851-1.93T3.71 15.5T3 12q0-1.883.726-3.525t1.979-2.858t2.94-1.916T12.238 3q1.75 0 3.332.591q1.583.592 2.786 1.64q1.203 1.05 1.923 2.5t.72 3.165q0 2.318-1.336 3.71T16 16h-1.773q-.629 0-1.053.433t-.424 1.044q0 .627.375 1.064t.375 1.009q0 .73-.409 1.09q-.408.36-1.13.36M7.21 12.21q.29-.29.29-.71t-.29-.71t-.71-.29t-.71.29t-.29.71t.29.71t.71.29t.71-.29m3-4q.29-.29.29-.71t-.29-.71t-.71-.29t-.71.29t-.29.71t.29.71t.71.29t.71-.29m5 0q.29-.29.29-.71t-.29-.71t-.71-.29t-.71.29t-.29.71t.29.71t.71.29t.71-.29m3 4q.29-.29.29-.71t-.29-.71t-.71-.29t-.71.29t-.29.71t.29.71t.71.29t.71-.29M11.961 20q.263 0 .4-.115q.138-.116.138-.335q0-.35-.375-.748t-.375-1.31q0-1.088.725-1.79T14.25 15H16q1.88 0 2.94-1.107T20 10.896q0-3.044-2.341-4.97T12.239 4Q8.78 4 6.39 6.325T4 12q0 3.325 2.338 5.663T11.962 20"/></svg>
+                    <h2>Дизайн Логотипа</h2>                       
+                    <p>
+                        Создаю уникальные логотипы с характером. Анализирую нишу, прорабатываю концепции, формы и смыслы. 
+                        Результат — запоминающийся знак, который работает на идентичность бренда и отлично смотрится 
+                        в любом масштабе: от фавикона до билборда.                    </p>
+                </div>
+                <div data-usal="flip zoom-in duration-500" class="content__item">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" viewBox="0 0 100 100" width="10vh" heigth="10vh" fill="black">
+                        <path d="M50.923 74.959h-31.52V28.364L46.161 5.088 72.277 27.41v29.255a1.5 1.5 0 1 0 3 0V29.974l9.761 8.343a1.501 1.501 0 0 0 1.949-2.281L47.127 1.968a1.5 1.5 0 0 0-1.959.008L6.141 35.924a1.5 1.5 0 1 0 1.969 2.263l8.293-7.214v45.485a1.5 1.5 0 0 0 1.5 1.5h33.02a1.5 1.5 0 1 0 0-2.999z"/>
+                        <path d="M92.467 90.794 58.178 51.861c.419-4.089-.666-7.397-3.196-9.577-3.077-2.651-5.906-2.147-10.186-1.387-.561.1-1.155.206-1.789.312-1.615.271-2.977-1.321-4.457-3.271-1.048-1.381-1.954-2.572-3.369-2.2-1.378.364-1.699 1.936-1.892 3.38-.853 6.396-.445 15.282 3.508 19.277 3.234 3.28 7.7 3.74 9.95 3.74.277 0 .505-.008.708-.017l39.301 34.388c1.217 1.201 2.726 1.889 4.144 1.888h.034c.977-.007 1.858-.361 2.483-.997 1.579-1.61 1.159-4.502-.95-6.603zM36.221 39.832c1.428 1.88 3.794 4.922 7.279 4.336.645-.107 1.25-.215 1.82-.316 4.239-.755 5.803-.933 7.703.706 1.796 1.548 2.515 3.941 2.166 7.101l-7.858 7.46c-1.385.06-5.614-.007-8.4-2.831-2.917-2.951-3.447-10.527-2.71-16.456zm20.305 14.693 3.118 3.54-5.725 5.723-3.721-3.256 6.328-6.007zm34.75 40.77c-.062.062-.207.093-.375.098-.464 0-1.272-.268-2.104-1.084L56.182 65.768l5.449-5.447L90.25 92.815a1.4 1.4 0 0 0 .075.079c1.028 1.01 1.202 2.146.951 2.401z"/>
+                    </svg> 
+                    <h2>Дизайн сайта в Figma</h2>                       
+                    <p>
+                        Продумываю структуру, интерфейсы и визуальный стиль. Делаю удобные макеты с учётом логики пользователя, чтобы разработка была быстрой, а результат — предсказуемым
+                    </p>
+                </div>
+                <!-- <div data-usal="flip zoom-in duration-500" class="content__item">
+                    <svg xmlns="http://www.w3.org/2000/svg" version="1.0" width="10vh" height="10vh" viewBox="0 0 300.000000 300.000000" preserveAspectRatio="xMidYMid meet">
+                        <g transform="translate(0.000000,300.000000) scale(0.100000,-0.100000)" fill="black" stroke="none">
+                        <path d="M1255 2935 c-328 -61 -599 -205 -822 -439 -191 -199 -313 -429 -375 -707 -20 -89 -23 -132 -23 -294 0 -162 3 -205 23 -294 66 -295 190 -520 401 -732 210 -209 441 -336 731 -401 91 -20 132 -23 310 -23 178 0 219 3 310 23 290 65 521 192 731 401 211 212 335 437 401 732 20 89 23 132 23 294 0 162 -3 205 -23 294 -66 295 -190 520 -401 732 -206 205 -428 329 -711 396 -89 21 -135 26 -300 29 -142 2 -217 -1 -275 -11z m397 -66 c615 -66 1121 -538 1222 -1138 21 -123 21 -349 0 -472 -77 -460 -405 -864 -847 -1045 -392 -159 -855 -128 -1222 82 -358 206 -613 567 -679 963 -21 123 -21 349 0 472 120 714 794 1217 1526 1138z"/>
+                        <path d="M970 2153 c-135 -47 -216 -165 -227 -335 l-6 -78 86 0 c96 0 86 -9 102 97 13 83 78 143 156 143 57 0 134 -27 301 -106 239 -113 321 -138 443 -138 80 0 109 4 146 21 116 53 189 190 189 354 l0 49 -84 0 -85 0 -6 -47 c-21 -152 -78 -203 -208 -182 -62 10 -146 43 -363 143 -203 93 -337 117 -444 79z"/>
+                        <path d="M1370 1175 l0 -565 110 0 110 0 -2 532 -3 532 -90 32 c-49 18 -98 33 -107 33 -17 1 -18 -32 -18 -564z"/>
+                        </g>
+                    </svg>
+                    <h2>Разработка сайта на Tilda</h2>
+                    <p>
+                        Собираю сайты на Tilda без хлама в коде. Zero Block, кастомная анимация, формы, подключение домена — всё аккуратно, быстро и с возможностью лёгкого редактирования вами.
+                    </p>
+                </div> -->
+                <div data-usal="flip zoom-in duration-500" class="content__item">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" viewBox="0 0 100 100" fill="black" width="10vh" heigth="10vh">
+                        <path d="M55.693 49.974a1.501 1.501 0 0 0-2.019.652L43.625 70.267a1.5 1.5 0 0 0 2.67 1.368l10.048-19.641a1.498 1.498 0 0 0-.65-2.02zm10.515-.75a1.5 1.5 0 1 0-2.121 2.121l9.583 9.58-9.583 9.58a1.5 1.5 0 1 0 2.122 2.121l10.645-10.641a1.5 1.5 0 0 0 0-2.122L66.208 49.224zm-30.297.001a1.5 1.5 0 0 0-2.121 0l-10.643 10.64a1.5 1.5 0 0 0 0 2.122l10.643 10.64c.293.293.677.439 1.061.439s.768-.146 1.061-.439a1.5 1.5 0 0 0 0-2.121l-9.581-9.58 9.581-9.58a1.5 1.5 0 0 0-.001-2.121z"/>
+                        <path d="M95.874 8.414H4.126a1.5 1.5 0 0 0-1.5 1.5v80.173a1.5 1.5 0 0 0 1.5 1.5h91.748a1.5 1.5 0 0 0 1.5-1.5V9.914a1.5 1.5 0 0 0-1.5-1.5zm-1.5 3v18.862H5.626V11.414h88.748zM5.626 88.587V33.276h88.748v55.311H5.626z"/>
+                        <path d="M13.562 21.851h6.89a1.5 1.5 0 1 0 0-3h-6.89a1.5 1.5 0 1 0 0 3zm14.764 0h6.89a1.5 1.5 0 1 0 0-3h-6.89a1.5 1.5 0 1 0 0 3z"/>
+                    </svg>                    
+                    <h2>Разработка сайта на сыром коде (HTML CSS JS)</h2>
+                    <p>
+                        Полный контроль над каждым пикселем. Чистый, лёгкий и быстрый код без фреймворков-перегрузок. Адаптивная вёрстка, анимации, интерактив — всё под ваш конкретный проект.
+                    </p>
+                </div>
+                <div data-usal="flip zoom-in duration-500" class="content__item">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="10vh" height="10vh" viewBox="0 0 24 24"><path fill="currentColor" d="M14.5 3L12 7.156L9.857 3H2l10 18L22 3zM4.486 4.5h2.4L12 13.8l5.107-9.3h2.4L12 18.021z"/></svg>
+                    <h2>Разработка сайта на VUE.JS</h2>
+                    <p>
+                        Полный контроль над каждым пикселем. Чистый, лёгкий и быстрый код без фреймворков-перегрузок. Адаптивная вёрстка, анимации, интерактив — всё под ваш конкретный проект.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="block block__reviews">
+        
+        <div data-usal="fade duration-500" class="reviews-content">
+            <div class="title-container">
+                <h1 class="title-text" data-text="Отзывы клиентов">Отзывы клиентов</h1>
+            </div>
+            <div class="reviews__container">
+                
+                <div data-usal="flip zoom-in duration-500" class="review__item">
+                    <div class="review__preview">
+                        <div class="preview-ratio">
+                            <div class="preview-frame">
+                                <div class="preview-placeholder">
+                                    <img src="./images/cargo.gif" alt="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review__text">
+                        <h2>Дизайн + Разработка HTML JS SASS</h2>
+                        <p class="review-quote">"Сделали лендинг для нашего стартапа. Дизайн 🔥, код чистый, всё работает быстро. Отдельное спасибо за анимации!"</p>
+                        <div class="review-author">
+                            <span class="author-name">Зотов Денис</span>
+                            <span class="author-project">Директор</span>
+                        </div>
+                    </div>
+                    <a href="https://bycom.tech" class="review__btn" target="_blank">
+                        <span>Посмотреть сайт</span>
+                        <span class="btn-arrow">→</span>
+                    </a>
+                    <a href="https://github.com/V-OVERWEB/cargo" class="review__btn" target="_blank">
+                        <span>Посмотреть исходный код</span>
+                        <span class="btn-code">&lt;/&gt;</span>
+                    </a>
+                </div>
+                
+                <div data-usal="flip zoom-in duration-500" class="review__item">
+                    <div class="review__preview">
+                        <div class="preview-ratio">
+                            <div class="preview-frame">
+                                <div class="preview-placeholder">
+                                    <img src="./images/finance.gif" alt="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review__text">
+                        <h2>Дизайн + Разработка HTML JS SASS</h2>
+                        <p class="review-quote">"Отличная работа с Tilda! Всё собрали быстро, анимации плавные, форма работает без ошибок. Рекомендую!"</p>
+                        <div class="review-author">
+                            <span class="author-name">Георгий</span>
+                            <span class="author-project">Владелец фирмы</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div data-usal="flip zoom-in duration-500" class="review__item">
+                    <div class="review__preview">
+                        <div class="preview-ratio">
+                            <div class="preview-frame">
+                                <div class="preview-placeholder">
+                                    <img src="./images/cleaner.gif" alt="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review__text">
+                        <h2>Разработка NUXT.js VUE.js</h2>
+                        <p class="review-quote">"Нужна была база для мультидоменного проекта на Nuxt Vue. Отличный результат, спасибо!"</p>
+                        <div class="review-author">
+                            <span class="author-name">Дмитрий Волков</span>
+                            <span class="author-project">Владелец студии</span>
+                        </div>
+                    </div>
+                    <a href="https://github.com/V-OVERWEB/cleaning" class="review__btn" target="_blank">
+                        <span>Посмотреть исходный код</span>
+                        <span class="btn-code">&lt;/&gt;</span>
+                    </a>
+                </div>
+                
+                <div data-usal="flip zoom-in duration-500" class="review__item">
+                    <div class="review__preview">
+                        <div class="preview-ratio">
+                            <div class="preview-frame">
+                                <div class="preview-placeholder">
+                                    <img src="./images/reisemagazin.gif" alt="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review__text">
+                        <h2>Pixel-perfect вёрстка на Vue.js Vite</h2>
+                        <p class="review-quote">"У нас очень строгая проверка на соответствие фигме, каждый пиксель важен. Владимир воспринял это настолько буквально, что даже наложением картинки на вёрстку нет ни единого отклонения. Хлопаю...</p>
+                        <div class="review-author">
+                            <span class="author-name">Александр Бордин</span>
+                            <span class="author-project">Тимлид фронтенд</span>
+                        </div>
+                    </div>
+                    <a href="https://github.com/V-OVERWEB/reisemagazin" class="review__btn" target="_blank">
+                        <span>Посмотреть исходный код</span>
+                        <span class="btn-code">&lt;/&gt;</span>
+                    </a>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    <div class="block block__contacts">
+        <div class="global-notification" id="globalNotification">
+            <div class="notification-content">
+                <span class="notification-icon"></span>
+                <span class="notification-text"></span>
+                <span class="notification-close" onclick="this.parentElement.parentElement.classList.remove('show')">×</span>
+            </div>
+        </div>
+        
+        <!-- ЭЛЕМЕНТ ДЛЯ АНИМАЦИИ ВЫКЛЮЧЕНИЯ ТЕЛЕВИЗОРА -->
+        <div class="crt-turn-off">
+            <div class="crt-band crt-band-top"></div>
+            <div class="crt-band crt-band-bottom"></div>
+            <div class="crt-center-line"></div>
+        </div>
+        
+        <div data-usal="fade duration-500" class="contacts-content">
+            <div class="title-container">
+                <h1 class="title-text" data-text="Cвязаться со мной">Cвязаться со мной</h1>
+            </div>
+            <div class="form__wrapper">
+                <div class="contacts__form" id="contactsFormBlock">
+                    <div class="form__header">
+                        <span class="form__prompt">$</span>
+                        <span class="form__title">./send_message --urgent</span>
+                        <span class="cursor-blink">_</span>
+                    </div>
+
+                    <form id="contact-form" action="https://script.google.com/macros/s/AKfycbzUiqSZo9it_yDsubL466-Ti-tRVSP-saL-DUS0kbR5YKUdkW6Ig1CBLV2hg_hz3Dls/exec" method="POST">
+                        <input type="hidden" name="_subject" value="Новое сообщение с OVERWEB">
+                        <input type="hidden" name="_replyto" value="email">
+
+                        <div class="form__group">
+                            <label class="form__label">
+                                <span class="label-sign">></span>
+                                Имя:
+                            </label>
+                            <input type="text" name="name" class="form__input glitch-hover" required 
+                                   placeholder="Neo / Тринити">
+                            <div class="input__glow"></div>
+                        </div>
+
+                        <div class="form__group">
+                            <label class="form__label">
+                                <span class="label-sign">></span>
+                                Контакт (email / телефон / Telegram):
+                            </label>
+                            <input type="text" name="contact" class="form__input glitch-hover" required 
+                                   placeholder="example@mail.com / +7XXX / @username">
+                            <div class="input__glow"></div>
+                        </div>
+
+                        <div class="form__group">
+                            <label class="form__label">
+                                <span class="label-sign">></span>
+                                Услуга:
+                            </label>
+                            <div class="select__wrapper">
+                                <select name="service" class="form__select" required>
+                                    <option value="" disabled selected>-- выбери опцию --</option>
+                                    <option value="design">🎨 Дизайн сайта в Figma</option>
+                                    <option value="tilda">⚡ Разработка на Tilda</option>
+                                    <option value="custom">💻 Кастомный сайт (HTML/CSS/JS)</option>
+                                    <option value="other">🔮 Другое (опишу в сообщении)</option>
+                                </select>
+                                <span class="select__arrow">▼</span>
+                            </div>
+                        </div>
+
+                        <div class="form__group">
+                            <label class="form__label">
+                                <span class="label-sign">></span>
+                                Сообщение:
+                            </label>
+                            <textarea name="message" class="form__textarea glitch-hover" required 
+                                      placeholder="Опишите ваш проект или вопрос..."></textarea>
+                            <div class="textarea__glow"></div>
+                        </div>
+
+                        <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
+
+                        <button type="submit" class="form__submit" id="submitBtn">
+                            <span class="btn__code">&lt;send&gt;</span>
+                            <span class="btn__text">Отправить сообщение</span>
+                            <span class="btn__arrow">→</span>
+                            <div class="btn__glitch-effect"></div>
+                        </button>
+
+                    </form>
+                </div>
+            </div>
+
+            <div class="contacts__footer">
+                <div class="footer__divider">
+                    <span class="divider__text">[ СВЯЗЬ СО МНОЙ ]</span>
+                </div>
+                <div class="footer__links">
+                    <a href="mailto:v.overweb@gmail.com" class="footer__link">
+                        <span>Email</span>
+                    </a>
+                    <a href="https://t.me/V_OVERWEB" target="_blank" class="footer__link">
+                        <span>Telegram</span>
+                    </a>
+                    <a href="https://github.com/V-OVERWEB" target="_blank" class="footer__link">
+                        <span>GitHub</span>
+                    </a>
+                </div>
+                <div class="footer__status">
+                    <span class="status__led"></span>
+                    <span class="status__text">Open for work</span>
+                    <span class="status__glitch">// готов к сотрудничеству</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.usal.dev/latest"></script>
+    <script src="./scripts/neon.js"></script>
+    <script src="./scripts/rain.js"></script>
+    <script src="./scripts/form.js"></script>
+    <script src="./scripts/header.js"></script>
+<script type="importmap">
+  {
+    "imports": {
+      "three": "https://unpkg.com/three@0.128.0/build/three.module.js",
+      "three/addons/": "https://unpkg.com/three@0.128.0/examples/jsm/"
+    }
+  }
+</script>
+<script type="module">
+    // ========== OVERWEB // 3D NEON + 2D CANVAS MATRIX RAIN ==========
+    import * as THREE from 'three';
+    import { CSS2DRenderer } from 'three/addons/renderers/CSS2DRenderer.js';
+    import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+    import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+    import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+
+    let globalScale = 1;
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768;
+    function checkMobileScale() {
+        if (window.innerWidth < 768) globalScale = 1.3;
+        else globalScale = 1;
+        return globalScale;
+    }
+    checkMobileScale();
+
+    const BLOOM_STRENGTH = 1;
+    const CONFIG = {
+        RING: { COLOR: '#88ff44', EMISSIVE: '#11ff44', EMISSIVE_INTENSITY: 0.7, ROUGHNESS: 0.5, OPACITY: 0.95 },
+        RING_DASHED: { COLOR: '#88ff44', EMISSIVE: '#11ff44', EMISSIVE_INTENSITY: 0.6, ROUGHNESS: 0.4, OPACITY: 0.9 },
+        RING_SMALL: { COLOR: '#88ff44', EMISSIVE: '#11ff44', EMISSIVE_INTENSITY: 0.6, ROUGHNESS: 0.3, OPACITY: 0.95 },
+        TEXT: { COLOR: '#888888', EMISSIVE: '#888888', EMISSIVE_INTENSITY: 0.0, ROUGHNESS: 0.2, OPACITY: 1 },
+        SUBTEXT: { COLOR: '#ffffff', EMISSIVE: '#ffffff', EMISSIVE_INTENSITY: 0.0, ROUGHNESS: 0.2, OPACITY: 1 },
+        SPARKLES: '#88ff44',
+        SPARKLES2: '#44ff88',
+        AMBIENT: '#113322',
+        DIR_LIGHT: '#ccffdd'
+    };
+    function hexToColor(hex) { return new THREE.Color(hex); }
+
+    // ========== ДОЖДЬ ==========
+    const rainCanvas = document.createElement('canvas');
+    const rainCtx = rainCanvas.getContext('2d', { alpha: true });
+    const symbolsSet = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ<>{}[]()';
+
+    const CHAR_SIZE = 10;
+    const MAIN_SPEED = 6;
+    const TRAIL_LENGTH = (isMobile ? 15 : 20);
+    const SYMBOL_CHANGE_CHANCE = 0.1;
+    const ROW_SPACING = 1.2;
+    let COL_WIDTH = CHAR_SIZE * 2.5;
+
+    let rainCols, rainDrops;
+    let symbolGrid = [];
+    let resizeTimeout = null;
+    let isResizing = false;
+
+    function initRain() {
+        rainCanvas.width = window.innerWidth;
+        rainCanvas.height = window.innerHeight;
+        
+        COL_WIDTH = CHAR_SIZE * (isMobile ? 1.5 : 0.4);
+        rainCols = Math.ceil(rainCanvas.width / COL_WIDTH) + 2;
+
+        if (!rainDrops) {
+            rainDrops = new Array(rainCols).fill(0).map(() => Math.random() * -rainCanvas.height * 2);
+        } else {
+            const oldCols = rainDrops.length;
+            const newDrops = new Array(rainCols);
+            for (let i = 0; i < rainCols; i++) {
+                const oldIndex = Math.floor(i * (oldCols / rainCols));
+                if (oldIndex < oldCols && rainDrops[oldIndex] !== undefined) {
+                    const relativePos = rainDrops[oldIndex] / rainCanvas.height;
+                    newDrops[i] = relativePos * rainCanvas.height;
+                } else {
+                    newDrops[i] = Math.random() * -rainCanvas.height * 2;
+                }
+            }
+            rainDrops = newDrops;
+        }
+
+        symbolGrid = [];
+        for (let i = 0; i < rainCols; i++) {
+            symbolGrid[i] = new Array(TRAIL_LENGTH + 1).fill(0).map(() => Math.floor(Math.random() * symbolsSet.length));
+        }
+    }
+    initRain();
+
+    function drawRain() {
+        rainCtx.clearRect(0, 0, rainCanvas.width, rainCanvas.height);
+        rainCtx.fillStyle = 'rgba(0, 2, 0, 0.85)';
+        rainCtx.fillRect(0, 0, rainCanvas.width, rainCanvas.height);
+        rainCtx.font = `bold ${CHAR_SIZE}px 'Courier New', monospace`;
+        rainCtx.textBaseline = 'top';
+
+        const step = CHAR_SIZE * ROW_SPACING;
+
+        for (let col = 0; col < rainCols; col++) {
+            const headY = rainDrops[col];
+            const xPos = col * COL_WIDTH;
+
+            if (Math.random() < SYMBOL_CHANGE_CHANCE) {
+                const slot = Math.floor(Math.random() * (TRAIL_LENGTH + 1));
+                symbolGrid[col][slot] = Math.floor(Math.random() * symbolsSet.length);
+            }
+
+            for (let i = TRAIL_LENGTH; i >= 0; i--) {
+                const yPos = headY - i * step;
+                if (yPos < -CHAR_SIZE || yPos > rainCanvas.height + CHAR_SIZE) continue;
+                const sym = symbolsSet[symbolGrid[col][i]];
+                if (i === 0) {
+                    rainCtx.fillStyle = '#ffffffaa';
+                    rainCtx.fillText(sym, xPos, yPos);
+                } else if (i === 1) {
+                    rainCtx.fillStyle = '#88ff88aa';
+                    rainCtx.fillText(sym, xPos, yPos);
+                } else if (i === 2) {
+                    rainCtx.fillStyle = '#44cc44aa';
+                    rainCtx.fillText(sym, xPos, yPos);
+                } else {
+                    const opacity = Math.max(0.2, 1 - (i / TRAIL_LENGTH) * 0.9);
+                    const green = Math.floor(150 - (i / TRAIL_LENGTH) * 100);
+                    rainCtx.fillStyle = `rgba(0, ${green}, 50, ${opacity})`;
+                    rainCtx.fillText(sym, xPos, yPos);
+                }
+            }
+
+            rainDrops[col] += MAIN_SPEED;
+            if (rainDrops[col] - TRAIL_LENGTH * step > rainCanvas.height + CHAR_SIZE * 3) {
+                rainDrops[col] = -Math.random() * rainCanvas.height * 0.5 - CHAR_SIZE * 5;
+                for (let i = 0; i <= TRAIL_LENGTH; i++) {
+                    symbolGrid[col][i] = Math.floor(Math.random() * symbolsSet.length);
+                }
+            }
+        }
+        rainTexture.needsUpdate = true;
+    }
+
+    const rainTexture = new THREE.CanvasTexture(rainCanvas);
+    rainTexture.minFilter = THREE.NearestFilter;
+    rainTexture.magFilter = THREE.NearestFilter;
+    rainTexture.generateMipmaps = false;
+
+    // ========== СЦЕНА ==========
+    const container = document.getElementById('canvas-container');
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x050805);
+
+    const camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.set(0.2 * globalScale, 0.4 * globalScale, 10.2 * globalScale);
+    camera.lookAt(0, 0, 0);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    let maxPixelRatio = isMobile ? 2 : 1.8;
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, maxPixelRatio));
+    container.appendChild(renderer.domElement);
+    renderer.domElement.style.pointerEvents = 'none';
+
+    const labelRenderer = new CSS2DRenderer();
+    labelRenderer.setSize(window.innerWidth, window.innerHeight);
+    labelRenderer.domElement.style.pointerEvents = 'none';
+    container.appendChild(labelRenderer.domElement);
+
+    const composer = new EffectComposer(renderer);
+    composer.addPass(new RenderPass(scene, camera));
+
+    let bloomStrength = 1.2;
+    let bloomThreshold = 0.08;
+    let bloomRadius = 0.85;
+
+    if (isMobile) {
+        bloomStrength = 1.3;
+        bloomThreshold = 0.04;
+        bloomRadius = 0.9;
+    }
+
+    const bloomPass = new UnrealBloomPass(
+        new THREE.Vector2(window.innerWidth, window.innerHeight),
+        bloomStrength, bloomRadius, bloomThreshold
+    );
+    bloomPass.strength = bloomStrength;
+    bloomPass.threshold = bloomThreshold;
+    bloomPass.radius = bloomRadius;
+    composer.addPass(bloomPass);
+
+    const rainMat = new THREE.MeshBasicMaterial({ map: rainTexture, depthWrite: false, depthTest: false, transparent: true });
+    const rainPlane = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), rainMat);
+    rainPlane.position.set(0, 0, -1);
+    rainPlane.renderOrder = -1;
+    camera.add(rainPlane);
+    scene.add(camera);
+
+    function updateRainPlaneScale() {
+        const aspect = window.innerWidth / window.innerHeight;
+        rainPlane.scale.set(aspect, 1, 1);
+    }
+
+    const sceneGroup = new THREE.Group();
+    scene.add(sceneGroup);
+
+    scene.add(new THREE.AmbientLight(hexToColor(CONFIG.AMBIENT), 0.6));
+    const dirLight = new THREE.DirectionalLight(hexToColor(CONFIG.DIR_LIGHT), 0.8);
+    dirLight.position.set(2, 4, 5);
+    scene.add(dirLight);
+    const fillLight = new THREE.PointLight(0x88ffbb, 0.4);
+    fillLight.position.set(-3, 1, 4);
+    scene.add(fillLight);
+
+    const ring = new THREE.Mesh(
+        new THREE.TorusGeometry(3.6, 0.14 * (1.7 - globalScale), 12, 48),
+        new THREE.MeshStandardMaterial({ color: hexToColor(CONFIG.RING.COLOR), emissive: hexToColor(CONFIG.RING.EMISSIVE), emissiveIntensity: CONFIG.RING.EMISSIVE_INTENSITY, roughness: CONFIG.RING.ROUGHNESS, transparent: true, opacity: CONFIG.RING.OPACITY })
+    );
+    ring.position.z = -0.1 * globalScale;
+    ring.renderOrder = 1;
+    sceneGroup.add(ring);
+
+    const ringDashed = new THREE.Mesh(
+        new THREE.TorusGeometry(3.0, 0.07 * (2 - globalScale), 9, 48),
+        new THREE.MeshStandardMaterial({ color: hexToColor(CONFIG.RING_DASHED.COLOR), emissive: hexToColor(CONFIG.RING_DASHED.EMISSIVE), emissiveIntensity: CONFIG.RING_DASHED.EMISSIVE_INTENSITY, roughness: CONFIG.RING_DASHED.ROUGHNESS, transparent: true, opacity: CONFIG.RING_DASHED.OPACITY })
+    );
+    ringDashed.position.z = 0.1 * globalScale;
+    ringDashed.renderOrder = 1;
+    sceneGroup.add(ringDashed);
+
+    const ringSmall = new THREE.Mesh(
+        new THREE.TorusGeometry(2.45, 0.05 * (2 - globalScale), 6, 48),
+        new THREE.MeshStandardMaterial({ color: hexToColor(CONFIG.RING_SMALL.COLOR), emissive: hexToColor(CONFIG.RING_SMALL.EMISSIVE), emissiveIntensity: CONFIG.RING_SMALL.EMISSIVE_INTENSITY, roughness: CONFIG.RING_SMALL.ROUGHNESS, transparent: true, opacity: CONFIG.RING_SMALL.OPACITY })
+    );
+    ringSmall.position.z = 0.25 * globalScale;
+    ringSmall.renderOrder = 1;
+    sceneGroup.add(ringSmall);
+
+    const sparklesCount = isMobile ? 100 : 200;
+    const sparklesGeo = new THREE.BufferGeometry();
+    const pos = new Float32Array(sparklesCount * 3);
+    for (let i = 0; i < sparklesCount; i++) {
+        const angle = (i / sparklesCount) * Math.PI * 2;
+        const r = 3.7 * (2 - globalScale);
+        pos[i*3] = Math.cos(angle) * r;
+        pos[i*3+1] = Math.sin(angle) * r;
+        pos[i*3+2] = -0.5 + Math.sin(angle * 3) * 0.2;
+    }
+    sparklesGeo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+    const sparkles = new THREE.Points(sparklesGeo, new THREE.PointsMaterial({ 
+        color: hexToColor(CONFIG.SPARKLES), 
+        size: 0.05,
+        blending: THREE.AdditiveBlending, 
+        depthWrite: false,
+        transparent: true,
+        opacity: 0.95
+    }));
+    sparkles.scale.set(globalScale, globalScale, globalScale);
+    sparkles.renderOrder = 1;
+    sceneGroup.add(sparkles);
+
+    const sparklesGeo2 = new THREE.BufferGeometry();
+    const pos2 = new Float32Array(sparklesCount * 3);
+    for (let i = 0; i < sparklesCount; i++) {
+        const angle = (i / sparklesCount) * Math.PI * 2;
+        const r = 3.5 * (2 - globalScale);
+        pos2[i*3] = Math.cos(angle) * r;
+        pos2[i*3+1] = Math.sin(angle) * r;
+        pos2[i*3+2] = 0.3 + Math.cos(angle * 3) * 0.15;
+    }
+    sparklesGeo2.setAttribute('position', new THREE.BufferAttribute(pos2, 3));
+    const sparkles2 = new THREE.Points(sparklesGeo2, new THREE.PointsMaterial({ 
+        color: hexToColor(CONFIG.SPARKLES2), 
+        size: 0.07,
+        blending: THREE.AdditiveBlending, 
+        depthWrite: false,
+        transparent: true,
+        opacity: 0.95
+    }));
+    sparkles2.scale.set(globalScale, globalScale, globalScale);
+    sparkles2.renderOrder = 1;
+    sceneGroup.add(sparkles2);
+
+    const loader = new THREE.FontLoader();
+    loader.load('https://threejs.org/examples/fonts/helvetiker_bold.typeface.json', (font) => {
+        const textGeo = new THREE.TextGeometry('OVERWEB', { font, size: 1.05 * (2.1 - globalScale), height: 0.55, curveSegments: 3 });
+        textGeo.center();
+        const textMesh = new THREE.Mesh(textGeo, new THREE.MeshStandardMaterial({ color: hexToColor(CONFIG.TEXT.COLOR), emissive: hexToColor(CONFIG.TEXT.EMISSIVE), emissiveIntensity: CONFIG.TEXT.EMISSIVE_INTENSITY, roughness: CONFIG.TEXT.ROUGHNESS, transparent: true, opacity: CONFIG.TEXT.OPACITY }));
+        textMesh.position.set(0, 0.1 * globalScale, 0.65 * globalScale);
+        textMesh.scale.set(globalScale, globalScale, globalScale);
+        textMesh.renderOrder = 1;
+        sceneGroup.add(textMesh);
+
+        const subGeo = new THREE.TextGeometry('Frontend Developer', { font, size: 0.32 * (2 - globalScale), height: 0.01, curveSegments: 1 });
+        subGeo.center();
+        const subMesh = new THREE.Mesh(subGeo, new THREE.MeshStandardMaterial({ color: hexToColor(CONFIG.SUBTEXT.COLOR), emissive: hexToColor(CONFIG.SUBTEXT.EMISSIVE), emissiveIntensity: CONFIG.SUBTEXT.EMISSIVE_INTENSITY, roughness: CONFIG.SUBTEXT.ROUGHNESS, transparent: true, opacity: CONFIG.SUBTEXT.OPACITY }));
+        subMesh.position.set(0, -4.3 * globalScale, 0.55 * globalScale);
+        subMesh.scale.set(globalScale, globalScale, globalScale);
+        subMesh.renderOrder = 1;
+        sceneGroup.add(subMesh);
+    });
+
+    updateRainPlaneScale();
+
+    function animate() {
+        requestAnimationFrame(animate);
+        drawRain();
+        const progress = Math.min(window.scrollY / window.innerHeight, 1.0);
+        sceneGroup.position.y = progress * 12.5 * globalScale;
+        ring.rotation.z += 0.0008;
+        ringDashed.rotation.z -= 0.0006;
+        sparkles.rotation.y += 0.005;
+        sparkles2.rotation.y -= 0.003;
+        composer.render();
+        labelRenderer.render(scene, camera);
+    }
+    animate();
+
+    window.addEventListener('resize', () => {
+        if (resizeTimeout) clearTimeout(resizeTimeout);
+
+        isResizing = true;
+
+        resizeTimeout = setTimeout(() => {
+            checkMobileScale();
+
+            const oldWidth = rainCanvas.width;
+            const oldHeight = rainCanvas.height;
+
+            rainCanvas.width = window.innerWidth;
+            rainCanvas.height = window.innerHeight;
+
+            if (rainDrops) {
+                const scaleY = rainCanvas.height / oldHeight;
+                for (let i = 0; i < rainDrops.length; i++) {
+                    rainDrops[i] = rainDrops[i] * scaleY;
+                }
+            }
+
+            COL_WIDTH = CHAR_SIZE * (isMobile ? 1 : 0.4);
+            const newCols = Math.ceil(rainCanvas.width / COL_WIDTH) + 2;
+
+            if (newCols !== rainCols) {
+                const oldDrops = rainDrops;
+                rainCols = newCols;
+                const newDrops = new Array(rainCols);
+                const newGrid = [];
+
+                for (let i = 0; i < rainCols; i++) {
+                    const oldIndex = Math.floor(i * (oldDrops.length / rainCols));
+                    if (oldIndex < oldDrops.length && oldDrops[oldIndex] !== undefined) {
+                        newDrops[i] = oldDrops[oldIndex];
+                    } else {
+                        newDrops[i] = Math.random() * -rainCanvas.height * 2;
+                    }
+
+                    newGrid[i] = new Array(TRAIL_LENGTH + 1);
+                    if (oldIndex < symbolGrid.length && symbolGrid[oldIndex]) {
+                        for (let j = 0; j <= TRAIL_LENGTH; j++) {
+                            newGrid[i][j] = symbolGrid[oldIndex][j] || Math.floor(Math.random() * symbolsSet.length);
+                        }
+                    } else {
+                        for (let j = 0; j <= TRAIL_LENGTH; j++) {
+                            newGrid[i][j] = Math.floor(Math.random() * symbolsSet.length);
+                        }
+                    }
+                }
+                rainDrops = newDrops;
+                symbolGrid = newGrid;
+            }
+
+            updateRainPlaneScale();
+
+            let newStrength = isMobile ? 1.8 : 1.4;
+            let newThreshold = isMobile ? 0.04 : 0.08;
+            bloomPass.strength = newStrength;
+            bloomPass.threshold = newThreshold;
+
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            composer.setSize(window.innerWidth, window.innerHeight);
+            labelRenderer.setSize(window.innerWidth, window.innerHeight);
+
+            isResizing = false;
+        }, 150);
+    });
+
+    setTimeout(() => {
+        const fallback = document.getElementById('canvas-fallback');
+        if (fallback) fallback.classList.add('hide');
+    }, 300);
+</script>
+</body>
+</html> 

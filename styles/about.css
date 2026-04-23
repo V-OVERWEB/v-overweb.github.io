@@ -1,0 +1,336 @@
+/* ===== БЛОК ОБО МНЕ ===== */
+.block__about {
+    position: relative;
+    min-height: 100vh;
+    width: 100%;
+    overflow: hidden;
+    z-index: 2;
+}
+
+.about-content {
+    position: relative;
+    z-index: 5;
+    padding: 2rem 3rem;
+    text-align: center;
+    min-height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.about__container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2vw;
+    margin-top: 2rem;
+    max-width: 1400px;
+    width: 100%;
+}
+
+/* Карточка обо мне */
+.about__item {
+        display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    gap: 2vh;
+    padding: 2rem 1.5rem;
+    border: 0px solid #00ff41;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5), inset 0 0 15px rgba(0, 255, 0, 0.05);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    border-radius: 30px;
+    background: rgb(255 255 255 / 10%);
+}
+
+/* Сканирующая полоса */
+.about__item::before {
+    content: '';
+    position: absolute;
+    top: -100%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, 
+        transparent 0%, 
+        rgba(0, 255, 65, 0.15) 30%,
+        rgba(0, 255, 65, 0.25) 50%,
+        rgba(0, 255, 65, 0.15) 70%,
+        transparent 100%);
+    transition: top 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.about__item:hover::before {
+    top: 100%;
+}
+
+/* Hover эффекты */
+.about__item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 21px rgba(0, 255, 65, 0.8);
+    border-color: #00ffaa;
+    background: #0a1a0a;
+    background-image: repeating-radial-gradient(
+        circle at 20% 30%,
+        rgba(0, 255, 65, 0.3) 0px,
+        rgba(0, 255, 65, 0.3) 2px,
+        transparent 2px,
+        transparent 4px
+    );
+    background-blend-mode: overlay;
+}
+
+/* Глитч заголовка */
+.about__item:hover h2 {
+    animation: glitchText 0.3s ease-in-out infinite;
+    text-shadow: 0 0 5px #00ff41, 0 0 10px #00ff41;
+}
+
+/* Иконка */
+.about__icon svg path,
+.about__icon svg g {
+    fill: #fff !important;
+    transition: fill 0.3s ease;
+}
+
+.about__icon svg {
+    filter: drop-shadow(0 0 3px #00ff41);
+}
+
+.about__icon:hover svg {
+    filter: drop-shadow(0 0 20px #00ff41);
+    animation: iconGlitch 0.4s ease-in-out;
+}
+
+.about__icon:hover svg path,
+.about__icon:hover svg g {
+    fill: #00ffaa !important;
+}
+
+.about__icon {
+    font-size: 48px;
+    transition: all 0.3s ease;
+}
+
+.about__item:hover .about__icon {
+    animation: iconGlitch 0.5s ease-in-out;
+}
+
+.about__item h2 {
+    color: #ffffff;
+    font-size: 1.5rem;
+    font-family: 'Share Tech Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    border-bottom: 1px solid rgba(0, 255, 65, 0.4);
+    padding-bottom: 0.8rem;
+    margin-bottom: 1rem;
+    width: 100%;
+    text-align: center;
+}
+
+/* Timeline (для опыта) */
+.about__timeline {
+    width: 100%;
+    text-align: left;
+}
+
+.timeline-item {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px dashed rgba(0, 255, 65, 0.2);
+}
+
+.timeline-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.timeline-year {
+    display: inline-block;
+    font-family: 'Share Tech Mono', monospace;
+    color: #00ff41;
+    font-size: 0.8rem;
+    background: rgba(0, 255, 65, 0.1);
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
+}
+
+.timeline-title {
+    display: block;
+    font-weight: bold;
+    color: #ffffff;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.timeline-desc {
+    color: #b8ffb8;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    font-family: monospace;
+}
+
+/* Стили для навыков */
+.about__skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+.skill-tag {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.8rem;
+    padding: 5px 12px;
+    background: rgba(0, 255, 65, 0.1);
+    border: 1px solid #00ff41;
+    border-radius: 20px;
+    color: #00ff41;
+    transition: all 0.3s ease;
+}
+
+.skill-tag:hover {
+    background: #00ff41;
+    color: #030503;
+    box-shadow: 0 0 10px #00ff41;
+    transform: scale(1.05);
+}
+
+/* Статистика */
+.about__stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    width: 100%;
+    text-align: center;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-number {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 2rem;
+    font-weight: bold;
+    color: #00ff41;
+    text-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+}
+
+.stat-label {
+    font-size: 0.8rem;
+    color: #88ff88;
+    margin-top: 0.25rem;
+}
+
+/* Образование */
+.about__education {
+    width: 100%;
+    text-align: left;
+}
+
+.edu-item {
+    margin-bottom: 1.2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px dashed rgba(0, 255, 65, 0.2);
+}
+
+.edu-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.edu-year {
+    display: inline-block;
+    font-family: 'Share Tech Mono', monospace;
+    color: #00ff41;
+    font-size: 0.75rem;
+    background: rgba(0, 255, 65, 0.1);
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-bottom: 0.4rem;
+}
+
+.edu-degree {
+    display: block;
+    font-weight: bold;
+    color: #ffffff;
+    font-size: 0.95rem;
+    margin-bottom: 0.3rem;
+}
+
+.edu-place {
+    color: #88ff88;
+    font-size: 0.8rem;
+    font-family: monospace;
+}
+
+/* Адаптивность */
+@media (max-width: 1024px) {
+    .about__container {
+        gap: 1.5rem;
+        padding: 1rem;
+        margin: 10px;
+    }
+    
+    .about__item {
+        padding: 1.5rem;
+    }
+    
+    .about__item h2 {
+        font-size: 1.3rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .about-content {
+        padding: 1rem;
+    }
+    
+    .about__container {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .about__item {
+        max-width: 100%;
+    }
+    
+    .about__stats {
+        gap: 1rem;
+    }
+    
+    .stat-number {
+        font-size: 1.5rem;
+    }
+    
+    .about__icon {
+        font-size: 36px;
+    }
+}
+
+@media (max-width: 480px) {
+    .about__stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .timeline-title,
+    .edu-degree {
+        font-size: 0.85rem;
+    }
+    
+    .timeline-desc,
+    .edu-place {
+        font-size: 0.75rem;
+    }
+}
