@@ -474,251 +474,155 @@
     <script src="./scripts/neon.js"></script>
     <script src="./scripts/form.js"></script>
     <script src="./scripts/header.js"></script>
-<script type="importmap">
-  {
-    "imports": {
-      "three": "https://unpkg.com/three@0.128.0/build/three.module.js",
-      "three/addons/": "https://unpkg.com/three@0.128.0/examples/jsm/"
-    }
-  }
-</script>
-<script type="module">
-    // ========== OVERWEB // 3D NEON + ДОЖДЬ ИЗ ЛИНИЙ (ОПТИМИЗИРОВАННЫЙ) ==========
-    import * as THREE from 'three';
-    import { CSS2DRenderer } from 'three/addons/renderers/CSS2DRenderer.js';
-    import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
-    import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 
-    let globalScale = 1;
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768;
-    function checkMobileScale() {
-        if (window.innerWidth < 768) globalScale = 1.3;
-        else globalScale = 1;
-        return globalScale;
-    }
-    checkMobileScale();
-
-    const CONFIG = {
-        RING: { COLOR: '#88ff44', EMISSIVE: '#11ff44', EMISSIVE_INTENSITY: 0.7, ROUGHNESS: 0.5, OPACITY: 0.95 },
-        RING_DASHED: { COLOR: '#88ff44', EMISSIVE: '#11ff44', EMISSIVE_INTENSITY: 0.6, ROUGHNESS: 0.4, OPACITY: 0.9 },
-        RING_SMALL: { COLOR: '#88ff44', EMISSIVE: '#11ff44', EMISSIVE_INTENSITY: 0.6, ROUGHNESS: 0.3, OPACITY: 0.95 },
-        TEXT: { COLOR: '#888888', EMISSIVE: '#888888', EMISSIVE_INTENSITY: 0.0, ROUGHNESS: 0.2, OPACITY: 1 },
-        SUBTEXT: { COLOR: '#ffffff', EMISSIVE: '#ffffff', EMISSIVE_INTENSITY: 0.0, ROUGHNESS: 0.2, OPACITY: 1 },
-        SPARKLES: '#88ff44',
-        SPARKLES2: '#44ff88',
-        AMBIENT: '#113322',
-        DIR_LIGHT: '#ccffdd'
-    };
-    function hexToColor(hex) { return new THREE.Color(hex); }
-
-   
-
-    // ========== СЦЕНА ==========
-    const container = document.getElementById('canvas-container');
-    const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x050805);
-
-    const camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.set(0.2 * globalScale, 0.4 * globalScale, 10.2 * globalScale);
-    camera.lookAt(0, 0, 0);
-
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    let maxPixelRatio = isMobile ? 2 : 1.8;
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, maxPixelRatio));
-    container.appendChild(renderer.domElement);
-    renderer.domElement.style.pointerEvents = 'none';
-
-    const labelRenderer = new CSS2DRenderer();
-    labelRenderer.setSize(window.innerWidth, window.innerHeight);
-    labelRenderer.domElement.style.pointerEvents = 'none';
-    container.appendChild(labelRenderer.domElement);
-
-    const composer = new EffectComposer(renderer);
-    composer.addPass(new RenderPass(scene, camera));
-
-
-    const sceneGroup = new THREE.Group();
-    scene.add(sceneGroup);
-
-    scene.add(new THREE.AmbientLight(hexToColor(CONFIG.AMBIENT), 0.6));
-    const dirLight = new THREE.DirectionalLight(hexToColor(CONFIG.DIR_LIGHT), 0.8);
-    dirLight.position.set(2, 4, 5);
-    scene.add(dirLight);
-    const fillLight = new THREE.PointLight(0x88ffbb, 0.4);
-    fillLight.position.set(-3, 1, 4);
-    scene.add(fillLight);
-
-    const ring = new THREE.Mesh(
-        new THREE.TorusGeometry(3.6, 0.14 * (1.7 - globalScale), 12, 48),
-        new THREE.MeshStandardMaterial({ 
-            color: hexToColor(CONFIG.RING.COLOR), 
-            emissive: hexToColor(CONFIG.RING.EMISSIVE), 
-            emissiveIntensity: CONFIG.RING.EMISSIVE_INTENSITY, 
-            roughness: CONFIG.RING.ROUGHNESS, 
-            transparent: true, 
-            opacity: CONFIG.RING.OPACITY 
-        })
-    );
-    ring.position.z = -0.1 * globalScale;
-    ring.renderOrder = 1;
-    sceneGroup.add(ring);
-
-    const ringDashed = new THREE.Mesh(
-        new THREE.TorusGeometry(3.0, 0.07 * (2 - globalScale), 9, 48),
-        new THREE.MeshStandardMaterial({ 
-            color: hexToColor(CONFIG.RING_DASHED.COLOR), 
-            emissive: hexToColor(CONFIG.RING_DASHED.EMISSIVE), 
-            emissiveIntensity: CONFIG.RING_DASHED.EMISSIVE_INTENSITY, 
-            roughness: CONFIG.RING_DASHED.ROUGHNESS, 
-            transparent: true, 
-            opacity: CONFIG.RING_DASHED.OPACITY 
-        })
-    );
-    ringDashed.position.z = 0.1 * globalScale;
-    ringDashed.renderOrder = 1;
-    sceneGroup.add(ringDashed);
-
-    const ringSmall = new THREE.Mesh(
-        new THREE.TorusGeometry(2.45, 0.05 * (2 - globalScale), 6, 48),
-        new THREE.MeshStandardMaterial({ 
-            color: hexToColor(CONFIG.RING_SMALL.COLOR), 
-            emissive: hexToColor(CONFIG.RING_SMALL.EMISSIVE), 
-            emissiveIntensity: CONFIG.RING_SMALL.EMISSIVE_INTENSITY, 
-            roughness: CONFIG.RING_SMALL.ROUGHNESS, 
-            transparent: true, 
-            opacity: CONFIG.RING_SMALL.OPACITY 
-        })
-    );
-    ringSmall.position.z = 0.25 * globalScale;
-    ringSmall.renderOrder = 1;
-    sceneGroup.add(ringSmall);
-
-    const sparklesCount = isMobile ? 100 : 200;
-    const sparklesGeo = new THREE.BufferGeometry();
-    const pos = new Float32Array(sparklesCount * 3);
-    for (let i = 0; i < sparklesCount; i++) {
-        const angle = (i / sparklesCount) * Math.PI * 2;
-        const r = 3.7 * (2 - globalScale);
-        pos[i*3] = Math.cos(angle) * r;
-        pos[i*3+1] = Math.sin(angle) * r;
-        pos[i*3+2] = -0.5 + Math.sin(angle * 3) * 0.2;
-    }
-    sparklesGeo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-    const sparkles = new THREE.Points(sparklesGeo, new THREE.PointsMaterial({ 
-        color: hexToColor(CONFIG.SPARKLES), 
-        size: 0.05,
-        blending: THREE.AdditiveBlending, 
-        depthWrite: false,
-        transparent: true,
-        opacity: 0.95
-    }));
-    sparkles.scale.set(globalScale, globalScale, globalScale);
-    sparkles.renderOrder = 1;
-    sceneGroup.add(sparkles);
-
-    const sparklesGeo2 = new THREE.BufferGeometry();
-    const pos2 = new Float32Array(sparklesCount * 3);
-    for (let i = 0; i < sparklesCount; i++) {
-        const angle = (i / sparklesCount) * Math.PI * 2;
-        const r = 3.5 * (2 - globalScale);
-        pos2[i*3] = Math.cos(angle) * r;
-        pos2[i*3+1] = Math.sin(angle) * r;
-        pos2[i*3+2] = 0.3 + Math.cos(angle * 3) * 0.15;
-    }
-    sparklesGeo2.setAttribute('position', new THREE.BufferAttribute(pos2, 3));
-    const sparkles2 = new THREE.Points(sparklesGeo2, new THREE.PointsMaterial({ 
-        color: hexToColor(CONFIG.SPARKLES2), 
-        size: 0.07,
-        blending: THREE.AdditiveBlending, 
-        depthWrite: false,
-        transparent: true,
-        opacity: 0.95
-    }));
-    sparkles2.scale.set(globalScale, globalScale, globalScale);
-    sparkles2.renderOrder = 1;
-    sceneGroup.add(sparkles2);
-
-    const loader = new THREE.FontLoader();
-    loader.load('https://threejs.org/examples/fonts/helvetiker_bold.typeface.json', (font) => {
-        const textGeo = new THREE.TextGeometry('OVERWEB', { 
-            font, 
-            size: 1.05 * (2.1 - globalScale), 
-            height: 0.55, 
-            curveSegments: 3 
-        });
-        textGeo.center();
-        const textMesh = new THREE.Mesh(textGeo, new THREE.MeshStandardMaterial({ 
-            color: hexToColor(CONFIG.TEXT.COLOR), 
-            emissive: hexToColor(CONFIG.TEXT.EMISSIVE), 
-            emissiveIntensity: CONFIG.TEXT.EMISSIVE_INTENSITY, 
-            roughness: CONFIG.TEXT.ROUGHNESS, 
-            transparent: true, 
-            opacity: CONFIG.TEXT.OPACITY 
-        }));
-        textMesh.position.set(0, 0.1 * globalScale, 0.65 * globalScale);
-        textMesh.scale.set(globalScale, globalScale, globalScale);
-        textMesh.renderOrder = 1;
-        sceneGroup.add(textMesh);
-
-        const subGeo = new THREE.TextGeometry('Frontend Developer', { 
-            font, 
-            size: 0.32 * (2 - globalScale), 
-            height: 0.01, 
-            curveSegments: 1 
-        });
-        subGeo.center();
-        const subMesh = new THREE.Mesh(subGeo, new THREE.MeshStandardMaterial({ 
-            color: hexToColor(CONFIG.SUBTEXT.COLOR), 
-            emissive: hexToColor(CONFIG.SUBTEXT.EMISSIVE), 
-            emissiveIntensity: CONFIG.SUBTEXT.EMISSIVE_INTENSITY, 
-            roughness: CONFIG.SUBTEXT.ROUGHNESS, 
-            transparent: true, 
-            opacity: CONFIG.SUBTEXT.OPACITY 
-        }));
-        subMesh.position.set(0, -4.3 * globalScale, 0.55 * globalScale);
-        subMesh.scale.set(globalScale, globalScale, globalScale);
-        subMesh.renderOrder = 1;
-        sceneGroup.add(subMesh);
-    });
-
-    
-    function animate() {
-        requestAnimationFrame(animate);
-        const progress = Math.min(window.scrollY / window.innerHeight, 1.0);
-        sceneGroup.position.y = progress * 12.5 * globalScale;
-        ring.rotation.z += 0.0008;
-        ringDashed.rotation.z -= 0.0006;
-        sparkles.rotation.y += 0.005;
-        sparkles2.rotation.y -= 0.003;
-        composer.render();
-        labelRenderer.render(scene, camera);
-    }
-    animate();
-
-    window.addEventListener('resize', () => {
-        if (resizeTimeout) clearTimeout(resizeTimeout);
-
-        resizeTimeout = setTimeout(() => {
-            checkMobileScale();
-
+    <script>
+        // ultra-fast minimal 3D with lightweight WebGL (fallback to canvas if needed)
+        (function(){
+            // immediate hide fallback after 200ms
+            setTimeout(()=>{
+                const fb = document.getElementById('canvas-fallback');
+                if(fb) fb.classList.add('hide');
+            },200);
             
-
-            let newStrength = isMobile ? 1.8 : 1.4;
-            let newThreshold = isMobile ? 0.04 : 0.08;
-
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            composer.setSize(window.innerWidth, window.innerHeight);
-            labelRenderer.setSize(window.innerWidth, window.innerHeight);
-        }, 150);
-    });
-
-    setTimeout(() => {
-        const fallback = document.getElementById('canvas-fallback');
-        if (fallback) fallback.classList.add('hide');
-    }, 300);
-</script>
+            const container = document.getElementById('canvas-container');
+            if(!container) return;
+            
+            // detect performance
+            const isMobile = /Android|webOS|iPhone|iPad|iPod/i.test(navigator.userAgent);
+            const lowEnd = isMobile || window.innerWidth < 768;
+            
+            import('https://unpkg.com/three@0.128.0/build/three.module.js').then((THREE) => {
+                const scene = new THREE.Scene();
+                scene.background = new THREE.Color(0x050805);
+                const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
+                camera.position.set(0, 0.5, 9);
+                camera.lookAt(0,0,0);
+                
+                const renderer = new THREE.WebGLRenderer({ antialias: !lowEnd, alpha: false });
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                renderer.setPixelRatio(Math.min(window.devicePixelRatio, lowEnd ? 1.5 : 2));
+                container.appendChild(renderer.domElement);
+                renderer.domElement.style.pointerEvents = 'none';
+                
+                // simple neon rings (reduced geometry)
+                const ringMat = new THREE.MeshStandardMaterial({ color: 0x88ff44, emissive: 0x22aa44, emissiveIntensity: 0.5, metalness: 0.8, roughness: 0.4 });
+                const ring1 = new THREE.Mesh(new THREE.TorusGeometry(2.8, 0.05, 24, 96), ringMat);
+                const ring2 = new THREE.Mesh(new THREE.TorusGeometry(2.3, 0.035, 20, 96), ringMat);
+                const ring3 = new THREE.Mesh(new THREE.TorusGeometry(1.8, 0.025, 16, 96), ringMat);
+                ring1.position.z = -0.2;
+                ring2.position.z = 0.1;
+                ring3.position.z = 0.3;
+                scene.add(ring1);
+                scene.add(ring2);
+                scene.add(ring3);
+                
+                // particles (sparkles)
+                const particleCount = lowEnd ? 180 : 400;
+                const particlesGeo = new THREE.BufferGeometry();
+                const positions = new Float32Array(particleCount * 3);
+                
+                const ambient = new THREE.AmbientLight(0x113322, 0.5);
+                const dirLight = new THREE.DirectionalLight(0xccffdd, 0.7);
+                dirLight.position.set(2,3,4);
+                scene.add(ambient);
+                scene.add(dirLight);
+                const backLight = new THREE.PointLight(0x44ff88, 0.3);
+                backLight.position.set(-1,1,-2);
+                scene.add(backLight);
+                
+                // small floating orbs (cheap)
+                const orbGroup = new THREE.Group();
+                const orbMat = new THREE.MeshStandardMaterial({ color: 0x66ffaa, emissive: 0x228844, emissiveIntensity: 0.3 });
+                for(let i=0;i<(lowEnd?12:24);i++){
+                    const orb = new THREE.Mesh(new THREE.SphereGeometry(0.02, 6,6), orbMat);
+                    const rad = 3;
+                    const ang = (i / (lowEnd?12:24)) * Math.PI * 2;
+                    orb.position.set(Math.cos(ang)*rad, Math.sin(ang)*rad*0.8, Math.sin(ang)*0.6);
+                    orbGroup.add(orb);
+                }
+                scene.add(orbGroup);
+                
+                let time = 0;
+                let scrollY = 0;
+                
+                function animate(){
+                    requestAnimationFrame(animate);
+                    time += 0.012;
+                    scrollY += (window.scrollY * 0.008 - scrollY) * 0.1;
+                    const yOffset = Math.min(scrollY, 3.5);
+                    ring1.rotation.z = time * 0.3;
+                    ring2.rotation.x = Math.sin(time*0.4)*0.1;
+                    ring2.rotation.z = -time * 0.25;
+                    ring3.rotation.z = time * 0.45;
+                    orbGroup.rotation.y += 0.005;
+                    orbGroup.rotation.z = Math.sin(time*0.3)*0.1;
+                    
+                    // subtle camera move based on scroll
+                    camera.position.y = 0.5 + yOffset * 0.15;
+                    camera.position.x = 0.1 * Math.sin(time*0.2);
+                    camera.lookAt(0, 0.2 + yOffset*0.1, 0);
+                    
+                    renderer.render(scene, camera);
+                }
+                animate();
+                
+                window.addEventListener('resize', ()=>{
+                    camera.aspect = window.innerWidth / window.innerHeight;
+                    camera.updateProjectionMatrix();
+                    renderer.setSize(window.innerWidth, window.innerHeight);
+                });
+            }).catch(e=>{
+                console.warn("WebGL fallback");
+                const container = document.getElementById('canvas-container');
+                if(container) container.style.display = 'none';
+            });
+        })();
+        
+        // simple burger menu and scroll nav
+        document.addEventListener('DOMContentLoaded',()=>{
+            const burger = document.getElementById('burgerMenu');
+            const nav = document.getElementById('mainNav');
+            if(burger && nav){
+                burger.addEventListener('click',()=> nav.classList.toggle('active'));
+            }
+            document.querySelectorAll('.nav__link').forEach(link=>{
+                link.addEventListener('click',(e)=>{
+                    const href = link.getAttribute('href');
+                    if(href && href.startsWith('#')){
+                        e.preventDefault();
+                        const target = document.querySelector(href);
+                        if(target){
+                            target.scrollIntoView({behavior:'smooth'});
+                            if(nav) nav.classList.remove('active');
+                        }
+                    }
+                });
+            });
+            // form submission with fetch fallback
+            const form = document.getElementById('contact-form');
+            if(form){
+                form.addEventListener('submit', async (e)=>{
+                    e.preventDefault();
+                    const btn = form.querySelector('.form__submit');
+                    const originalText = btn.innerHTML;
+                    btn.innerHTML = '⏳ Отправка...';
+                    btn.disabled = true;
+                    try{
+                        const formData = new FormData(form);
+                        const response = await fetch(form.action, { method: 'POST', body: formData, mode: 'no-cors' });
+                        alert('Сообщение отправлено! Я свяжусь с вами.');
+                        form.reset();
+                    }catch(err){
+                        alert('Ошибка, но сообщение может быть отправлено. Свяжитесь в Telegram.');
+                    }finally{
+                        btn.innerHTML = originalText;
+                        btn.disabled = false;
+                    }
+                });
+            }
+        });
+    </script>
+    <!-- load aos after content -->
+    <script async src="https://cdn.usal.dev/latest"></script>
 </body>
-</html> 
+</html>
