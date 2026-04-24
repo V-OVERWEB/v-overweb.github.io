@@ -1,6 +1,4 @@
 .block__first {
-    overflow-x: hidden;
-    background-color: black;
     font-family: 'Share Tech Mono', monospace;
 }
 .block__second {
