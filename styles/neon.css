@@ -1,186 +1,355 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    user-select: none;
-}
-
-@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
-
-/* ========== СТИЛИ ДЛЯ ПЕРВОГО БЛОКА (НЕОН) ========== */
 .block__first {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     position: relative;
     height: 100vh;
-    background: radial-gradient(ellipse at center, #0a1f0a 0%, #030603 100%);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    isolation: isolate;
+    z-index: 2;
+    background: transparent;
+    overflow: hidden;
 }
-
-/* Контейнер вывески */
-.sign {
+@keyframes matrixPulse {
+    0% { opacity: 0.3; transform: scale(1);}
+    100% { opacity: 0.8; transform: scale(1.2);}
+}
+/* Главный контейнер неон-сферы и текста */
+.neon {
     position: relative;
-    width: min(85vw, 85vh, 550px);
-    height: min(85vw, 85vh, 550px);
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 10;
-}
-
-.ring {
-    position: absolute;
     width: 100%;
     height: 100%;
-    border-radius: 50%;
-    border: 5px solid #00ff00;
-    box-shadow: 0 0 15px #00ff00, 0 0 30px #00ff00, inset 0 0 10px #00ff00;
-    animation: pulse 2.5s infinite ease-in-out;
-}
-
-.ring-dashed {
-    position: absolute;
-    width: 88%;
-    height: 88%;
-    border-radius: 50%;
-    border: 2px dashed #00ff00;
-    opacity: 0.5;
-    box-shadow: 0 0 8px #00ff00;
-    animation: pulse 2.5s infinite ease-in-out reverse;
-}
-
-.overweb {
-    position: relative;
     z-index: 2;
-    font-family: 'Orbitron', 'Impact', 'Arial Black', sans-serif;
-    font-size: clamp(2.8rem, 12vw, 5.2rem);
-    font-weight: 900;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    text-shadow: 0 0 0px rgb(255, 255, 255), 0 0 20px rgba(255, 255, 255, 0), 0 0 40px rgb(255, 255, 255);
-    background: linear-gradient(135deg, rgb(255, 255, 255), #0a8);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    text-align: center;
-    line-height: 1.2;
 }
-.sub {
+/* Текст O V E R W E B с объёмной 3D перспективой и реалистичным свечением */
+.neon__name {
+    color: #dbffe4;
+    font-size: 160px;
+    font-weight: 700;
+    margin: 0 auto;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    filter: blur(1px);
+    font-family: "Righteous";
+    scale: 0.85;
+}
+.neon__name span {
+    position: relative;
+}
+
+.neon__name span:nth-child(1) {
+    text-shadow: 0px 0px 20px #9bcca7, 0px 0px 20px #9bcca7, 21px 0px 0px #9bcca7, 19px 0px 0px #9bcca7, 14px 0px 0px #9bcca7;
+    z-index: 2;
+}
+.neon__name span:nth-child(2) {
+    text-shadow: 0px 0px 20px #9bcca7, 0px 0px 20px #9bcca7, 16px 0px 0px #9bcca7, 10px 0px 0px #9bcca7, 4px 0px 0px #9bcca7;
+    z-index: 3;
+    font-size: 170px;
+}
+.neon__name span:nth-child(3) {
+    text-shadow: 0px 0px 20px #9bcca7, 0px 0px 20px #9bcca7, 10px 0px 0px #9bcca7, 5px 0px 0px #9bcca7;
+    z-index: 4;
+    font-size: 175px;
+}
+.neon__name span:nth-child(4) {
+    text-shadow: 0px 0px 20px #9bcca7, 0px 0px 20px #9bcca7, -4px 0px 0px #9bcca7;
+    z-index: 5;
+    font-size: 180px;
+}
+.neon__name span:nth-child(5) {
+    text-shadow: 0px 0px 20px #9bcca7, 0px 0px 20px #9bcca7,-10px 0px 0px #9bcca7, -5px 0px 0px #9bcca7;
+    z-index: 4;font-size: 175px;
+}
+.neon__name span:nth-child(6) {
+    text-shadow: 0px 0px 20px #9bcca7, 0px 0px 20px #9bcca7, -16px 0px 0px #9bcca7, -10px 0px 0px #9bcca7, -4px 0px 0px #9bcca7;
+    z-index: 3;
+    font-size: 170px;
+}
+.neon__name span:nth-child(7) {
+    text-shadow: 0px 0px 20px #9bcca7, 0px 0px 20px #9bcca7, -21px 0px 0px #9bcca7, -19px 0px 0px #9bcca7, -14px 0px 0px #9bcca7;
+    z-index: 2;
+}
+/* Усиленное свечение для каждой буквы с разной частотой */
+@keyframes neonGlow1 {
+    0% { text-shadow: 0 0 5px #0f0, 0 0 15px #0f0, 0 0 25px #2bff89; filter: brightness(0.95);}
+    100% { text-shadow: 0 0 18px #c0ffd8, 0 0 38px #68ff9e, 0 0 65px #1eff73; filter: brightness(1.2);}
+}
+@keyframes neonGlow2 {
+    0% { text-shadow: 0 0 8px #0f0, 0 0 20px #0f0, 0 0 30px #41ff88; filter: brightness(0.98);}
+    100% { text-shadow: 0 0 20px #dcffe6, 0 0 42px #78ffae, 0 0 70px #36ff84; filter: brightness(1.18);}
+}
+@keyframes neonGlow3 {
+    0% { text-shadow: 0 0 7px #0f0, 0 0 18px #0f0, 0 0 28px #1eff73; filter: brightness(1);}
+    100% { text-shadow: 0 0 25px #f0fff4, 0 0 48px #93ffbe, 0 0 80px #4eff95; filter: brightness(1.25);}
+}
+@keyframes neonGlow4 {
+    0% { text-shadow: 0 0 10px #0f0, 0 0 22px #0f0, 0 0 35px #00e664; filter: brightness(0.93);}
+    100% { text-shadow: 0 0 26px #e2ffee, 0 0 50px #84ffb4, 0 0 75px #2bff7a; filter: brightness(1.22);}
+}
+/* общее мерцание контейнера текста для атмосферы */
+@keyframes textFlicker {
+    0%, 100% { opacity: 1; filter: drop-shadow(0 0 5px #1eff6f);}
+    92% { opacity: 1; filter: drop-shadow(0 0 15px #00ff4c);}
+    95% { opacity: 0.92; filter: drop-shadow(0 0 2px #8affb0);}
+    97% { opacity: 1; filter: drop-shadow(0 0 18px #2eff7a);}
+}
+/* ========== НЕОНОВЫЕ КОЛЬЦА С БЛУМОМ И ДИНАМИКОЙ ========== */
+.neon__ring {
     position: absolute;
-    bottom: -10vh;
+    border-radius: 50%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    will-change: transform, box-shadow;
+    transition: box-shadow 0.3s ease;
+    animation: pulseRing 4s infinite alternate ease-in-out;
+}
+/* БОЛЬШОЕ КОЛЬЦО */
+.neon__ring--big {
+    width: min(85vw, 540px);
+    height: min(85vw, 540px);
+    border: 4px solid rgba(100, 255, 150, 0.9);
+    box-shadow: 
+        0 0 15px 5px rgba(0, 255, 120, 0.7),
+        0 0 45px 15px rgba(0, 210, 100, 0.5),
+        inset 0 0 28px 10px rgba(0, 255, 120, 0.4);
+    background: radial-gradient(circle, rgba(0,255,100,0.05) 0%, rgba(0,20,0,0.2) 70%);
+    animation: ringRotate 24s infinite linear, glowRingBig 3s infinite alternate;
+}
+/* СРЕДНЕЕ КОЛЬЦО */
+.neon__ring--medium {
+    width: min(72vw, 450px);
+    height: min(72vw, 450px);
+    border: 3.5px solid rgb(180, 255, 200);
+    box-shadow: 
+        0 0 18px 6px rgba(0, 255, 140, 0.8),
+        0 0 52px 18px rgba(0, 210, 110, 0.6),
+        inset 0 0 24px 8px rgba(100, 255, 150, 0.5);
+    background: radial-gradient(circle, rgba(60,255,100,0.03) 0%, transparent 75%);
+    animation: ringRotateRev 20s infinite linear, glowRingMedium 3.2s infinite alternate;
+}
+/* МАЛОЕ КОЛЬЦО */
+.neon__ring--small {
+    width: min(45vw, 350px);
+    height: min(45vw, 350px);
+    border: 3px solid #ccffe0;
+    box-shadow: 
+        0 0 22px 8px rgba(0, 255, 130, 0.85),
+        0 0 58px 20px rgba(0, 210, 120, 0.65),
+        inset 0 0 28px 10px rgba(80, 255, 130, 0.55);
+    background: radial-gradient(circle, rgba(0,255,70,0.08) 0%, transparent 80%);
+    animation: ringRotate 18s infinite linear reverse, glowRingSmall 2.8s infinite alternate;
+}
+/* вращение для трехмерной динамики */
+@keyframes ringRotate {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+@keyframes ringRotateRev {
+    0% { transform: translate(-50%, -50%) rotate(360deg); }
+    100% { transform: translate(-50%, -50%) rotate(0deg); }
+}
+/* плавающее свечение колец — реалистичный блум */
+@keyframes glowRingBig {
+    0% { box-shadow: 0 0 12px 4px rgba(0, 255, 90, 0.6), inset 0 0 14px 5px rgba(0, 230, 100, 0.5); border-color: #aaffcc;}
+    100% { box-shadow: 0 0 40px 20px rgba(0, 255, 120, 0.85), inset 0 0 36px 14px rgba(70, 255, 140, 0.7); border-color: #e2ffea;}
+}
+@keyframes glowRingMedium {
+    0% { box-shadow: 0 0 14px 5px rgba(0, 230, 100, 0.65), inset 0 0 18px 7px rgba(0, 220, 100, 0.55); border-color: #befad3;}
+    100% { box-shadow: 0 0 44px 22px rgba(70, 255, 130, 0.9), inset 0 0 40px 16px rgba(80, 255, 130, 0.75); border-color: white;}
+}
+@keyframes glowRingSmall {
+    0% { box-shadow: 0 0 16px 6px rgba(0, 250, 110, 0.7), inset 0 0 20px 8px rgba(0, 210, 100, 0.6); border-color: #c6ffdf;}
+    100% { box-shadow: 0 0 48px 25px rgba(0, 255, 140, 0.95), inset 0 0 48px 20px rgba(70, 255, 140, 0.85); border-color: #ffffffcc;}
+}
+/* Пульсация радиусов для дополнительной "дышащей" атмосферы */
+@keyframes pulseRing {
+    0% { transform: translate(-50%, -50%) scale(0.98); opacity: 0.9;}
+    100% { transform: translate(-50%, -50%) scale(1.02); opacity: 1;}
+}
+/* Добавляем частицы искр / глитч-эффекты вокруг колец (опционально) */
+.digital-particles {
+    position: absolute;
+    top: 0;
     left: 0;
-    right: 0;
-    text-align: center;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 28px;
-    color: #00ff00;
-    text-shadow: 0 0 5px #00ff00;
-    letter-spacing: 2px;
-    opacity: 0.7;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 3;
+    overflow: hidden;
 }
-@keyframes pulse {
-    0% { opacity: 0.8; box-shadow: 0 0 8px #00ff00, 0 0 15px #00ff00, inset 0 0 5px #00ff00; }
-    50% { opacity: 1; box-shadow: 0 0 20px #00ff00, 0 0 45px #00ff00, inset 0 0 15px #00ff00; }
-    100% { opacity: 0.85; box-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00, inset 0 0 8px #00ff00; }
+.particle {
+    position: absolute;
+    background: #2eff7a;
+    border-radius: 50%;
+    filter: blur(2px);
+    opacity: 0;
+    animation: particleFloat 5s infinite linear;
+    box-shadow: 0 0 12px #0f0;
 }
-.blink-fast {
-    animation: blinkAnim 0.15s 2;
+@keyframes particleFloat {
+    0% { opacity: 0; transform: translateY(0px) scale(0.2);}
+    20% { opacity: 0.8; transform: translateY(-20px) scale(1);}
+    80% { opacity: 0.5; transform: translateY(-80px) scale(1.2);}
+    100% { opacity: 0; transform: translateY(-150px) scale(0.5);}
+}
+/* Адаптивность и медиа-запросы */
+@media (max-width: 768px) {
+    .neon__name {
+        scale: 0.8;
+    }
+}
+@media (max-width: 620px) {
+    .neon__name {
+        scale: 0.7;
+    }
+}
+@media (max-width: 570px) {
+    .neon__name {
+        scale: 0.6;
+    }
+}
+@media (max-width: 500px) {
+    .neon__name {
+        scale: 0.55;
+    }
+}
+@media (max-width: 450px) {
+    .neon__name {
+        scale: 0.5;
+    }
+}
+@media (max-width: 420px) {
+    .neon__name {
+        scale: 0.45;
+    }
+}
+@media (max-width: 400px) {
+    .neon__name {
+        scale: 0.4;
+    }
 }
 
-@keyframes blinkAnim {
-    0% { opacity: 1; text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00; }
-    50% { opacity: 0.2; text-shadow: 0 0 2px #00ff00; }
-    100% { opacity: 1; text-shadow: 0 0 10px #00ff00, 0 0 25px #00ff00; }
+/* ночной блюр / атмосферный свет */
+.block__first {
+    box-shadow: inset 0 0 150px rgba(0,20,0,0.5);
 }
-
-.ring-blink {
-    animation: ringBlinkAnim 0.15s 2;
+/* трехмерный эффект перспективы для букв с дополнительной тенью от движения */
+.neon__name span {
+    transition: text-shadow 0.2s, transform 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
 }
-
-@keyframes ringBlinkAnim {
-    0% { border-color: #00ff00; box-shadow: 0 0 15px #00ff00; }
-    50% { border-color: #f0f; box-shadow: 0 0 5px #f0f; }
-    100% { border-color: #00ff00; box-shadow: 0 0 20px #00ff00; }
-}
-.btn {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: rgba(0,0,0,0.7);
-    backdrop-filter: blur(8px);
-    border: 1px solid #00ff00;
-    border-radius: 30px;
-    padding: 8px 18px;
-    font-family: monospace;
-    font-weight: bold;
-    font-size: 12px;
-    color: #00ff00;
-    cursor: pointer;
-    z-index: 100;
+.neon__name:hover span {
+    transform: translateZ(5px) rotateY(2deg);
     transition: 0.2s;
 }
-.btn:hover {
-    background: #00ff00;
-    color: #000;
-    box-shadow: 0 0 15px #00ff00;
+/* по отдельности при ховере создается интерактив */
+.neon__name span:hover {
+    transform: translateZ(60px) rotateY(0deg) scale(1.03);
+    text-shadow: 0 0 35px #fff, 0 0 65px #56ff95;
+    transition: 0.15s;
+}
+.tv-effect {
+    position: relative;
+    display: inline-block;
+    font-size: 80px;
+    font-weight: bold;
+    color: white;
+    padding: 40px 60px;
+    width: 600px;
+    height: 600px;
+    position: absolute;
+    z-index: 3;
+    /* Маска, которая создает затухание к краям */
+    mask-image: radial-gradient(
+        circle at center,
+        #0000006e 60%,
+        transparent 95%
+    );
+    -webkit-mask-image: radial-gradient(
+        circle at center,
+        #0000006e 60%,
+        transparent 95%
+    );
+    
+    /* Базовые TV-эффекты */
+    filter: contrast(1.3) brightness(0.9);
+    backdrop-filter: blur(2px);
 }
 
-
-#info {
+/* Слой с шумом */
+.tv-effect::before {
+    content: "";
     position: absolute;
-    bottom: 20px;
-    left: 20px;
-    color: #0ff;
-    text-shadow: 0 0 15px #0ff;
-    font-size: 14px;
-    letter-spacing: 2px;
-    z-index: 20;
-    opacity: 0.7;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: repeating-radial-gradient(
+        circle at 50% 50%,
+        rgba(0,0,0,0.3),
+        rgba(255,255,255,0.2) 0.00085px
+    );
     pointer-events: none;
+    z-index: 1;
+    animation: static-move 0.2s infinite;
+    
+    /* Шум тоже затухает к краям */
+    mask-image: radial-gradient(
+        circle at center,
+        rgba(0, 0, 0, 0.479) 60%,
+        transparent 95%
+    );
+    -webkit-mask-image: radial-gradient(
+        circle at center,
+        rgba(0, 0, 0, 0.486) 60%,
+        transparent 95%
+    );
 }
-/* Кнопка в стиле киберпанк (оставим для возможного взаимодействия) */
-.cyber-btn {
+
+/* Слой с горизонтальными полосами */
+.tv-effect::after {
+    content: "";
     position: absolute;
-    bottom: 20px;
-    right: 20px;
-    background: rgba(0, 20, 20, 0.6);
-    backdrop-filter: blur(8px);
-    border: 1.5px solid #00ffff;
-    border-radius: 40px;
-    padding: 10px 24px;
-    font-family: 'Orbitron', sans-serif;
-    font-weight: 700;
-    font-size: 14px;
-    color: #00ffff;
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    cursor: pointer;
-    z-index: 100;
-    box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
-    transition: all 0.3s ease;
-    border: 1px solid #0ff;
-    text-shadow: 0 0 8px #0ff;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(0,0,0,0.35) 0px,
+        rgba(0,0,0,0.35) 2px,
+        transparent 2px,
+        transparent 4px
+    );
+    pointer-events: none;
+    z-index: 2;
+    mix-blend-mode: multiply;
+    
+    /* Полосы тоже затухают к краям */
+    mask-image: radial-gradient(
+        circle at center,
+        black 60%,
+        transparent 95%
+    );
+    -webkit-mask-image: radial-gradient(
+        circle at center,
+        black 60%,
+        transparent 95%
+    );
 }
-.cyber-btn:hover {
-    background: #0ff;
-    color: #000;
-    box-shadow: 0 0 40px #0ff;
-    border-color: #fff;
-    text-shadow: none;
-}
-/* Адаптивный лоадер (на всякий случай) */
-.loading {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: #0f0;
-    font-family: 'Orbitron', sans-serif;
-    font-size: 20px;
-    z-index: 10;
-    opacity: 0;
-    transition: opacity 1s;
-}
-canvas {
-    display: block;
+
+@keyframes static-move {
+    0% {
+        background-size: 100% 100%;
+        opacity: 0.7;
+    }
+    100% {
+        background-size: 200% 200%;
+        opacity: 1;
+    }
 }

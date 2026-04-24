@@ -12,20 +12,12 @@
     <link rel="stylesheet" href="./styles/contact.css">
     <link rel="stylesheet" href="./styles/services.css">
     <link rel="stylesheet" href="./styles/header.css">
-    <link rel="stylesheet" href="./styles/neon2.css">
     <link rel="stylesheet" href="./styles/about.css">
+    <link href="https://fonts.googleapis.com/css2?family=Righteous&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 </head>
 <body>
-    <div id="canvas-fallback">
-        <div class="fallback-content">
-            <div class="fallback-spinner"></div>
-            <div class="fallback-text">
-                INITIALIZING 3D<span class="fallback-dots">...</span>
-            </div>
-        </div>
-    </div>
-
+    <div class="matrix-rain" id="matrixRain"></div>
     <header class="matrix-header" id="matrixHeader">
         <div class="header__container">
             <div class="header__logo-container">
@@ -76,13 +68,16 @@
     </header>
 
     <div class="block block__first">
-        <div id="canvas-container"></div>
-        <div class="scroll-area"></div>
-        <div class="pixel-overlay"></div>
-        <div class="pixel-blur"></div>
-        <div class="crt-scan"></div>
+        <div class="neon">
+            <div class="neon__ring neon__ring--big"></div>
+            <div class="neon__ring neon__ring--medium"></div>
+            <div class="neon__ring neon__ring--small"></div>
+            <div class="neon__name"><span>O</span><span>V</span><span>E</span><span>R</span><span>W</span><span>E</span><span>B</span></div>
+        </div>
+        <div class="tv-effect"></div>
+        
     </div>
-    
+
     
     <div class="block block__about">
         <div data-usal="fade duration-500" class="about-content">
@@ -472,157 +467,8 @@
 
     <script src="https://cdn.usal.dev/latest"></script>
     <script src="./scripts/neon.js"></script>
+    <script src="./scripts/rain.js"></script>
     <script src="./scripts/form.js"></script>
     <script src="./scripts/header.js"></script>
-
-    <script>
-        // ultra-fast minimal 3D with lightweight WebGL (fallback to canvas if needed)
-        (function(){
-            // immediate hide fallback after 200ms
-            setTimeout(()=>{
-                const fb = document.getElementById('canvas-fallback');
-                if(fb) fb.classList.add('hide');
-            },200);
-            
-            const container = document.getElementById('canvas-container');
-            if(!container) return;
-            
-            // detect performance
-            const isMobile = /Android|webOS|iPhone|iPad|iPod/i.test(navigator.userAgent);
-            const lowEnd = isMobile || window.innerWidth < 768;
-            
-            import('https://unpkg.com/three@0.128.0/build/three.module.js').then((THREE) => {
-                const scene = new THREE.Scene();
-                scene.background = new THREE.Color(0x050805);
-                const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
-                camera.position.set(0, 0.5, 9);
-                camera.lookAt(0,0,0);
-                
-                const renderer = new THREE.WebGLRenderer({ antialias: !lowEnd, alpha: false });
-                renderer.setSize(window.innerWidth, window.innerHeight);
-                renderer.setPixelRatio(Math.min(window.devicePixelRatio, lowEnd ? 1.5 : 2));
-                container.appendChild(renderer.domElement);
-                renderer.domElement.style.pointerEvents = 'none';
-                
-                // simple neon rings (reduced geometry)
-                const ringMat = new THREE.MeshStandardMaterial({ color: 0x88ff44, emissive: 0x22aa44, emissiveIntensity: 0.5, metalness: 0.8, roughness: 0.4 });
-                const ring1 = new THREE.Mesh(new THREE.TorusGeometry(2.8, 0.05, 24, 96), ringMat);
-                const ring2 = new THREE.Mesh(new THREE.TorusGeometry(2.3, 0.035, 20, 96), ringMat);
-                const ring3 = new THREE.Mesh(new THREE.TorusGeometry(1.8, 0.025, 16, 96), ringMat);
-                ring1.position.z = -0.2;
-                ring2.position.z = 0.1;
-                ring3.position.z = 0.3;
-                scene.add(ring1);
-                scene.add(ring2);
-                scene.add(ring3);
-                
-                // particles (sparkles)
-                const particleCount = lowEnd ? 180 : 400;
-                const particlesGeo = new THREE.BufferGeometry();
-                const positions = new Float32Array(particleCount * 3);
-                
-                const ambient = new THREE.AmbientLight(0x113322, 0.5);
-                const dirLight = new THREE.DirectionalLight(0xccffdd, 0.7);
-                dirLight.position.set(2,3,4);
-                scene.add(ambient);
-                scene.add(dirLight);
-                const backLight = new THREE.PointLight(0x44ff88, 0.3);
-                backLight.position.set(-1,1,-2);
-                scene.add(backLight);
-                
-                // small floating orbs (cheap)
-                const orbGroup = new THREE.Group();
-                const orbMat = new THREE.MeshStandardMaterial({ color: 0x66ffaa, emissive: 0x228844, emissiveIntensity: 0.3 });
-                for(let i=0;i<(lowEnd?12:24);i++){
-                    const orb = new THREE.Mesh(new THREE.SphereGeometry(0.02, 6,6), orbMat);
-                    const rad = 3;
-                    const ang = (i / (lowEnd?12:24)) * Math.PI * 2;
-                    orb.position.set(Math.cos(ang)*rad, Math.sin(ang)*rad*0.8, Math.sin(ang)*0.6);
-                    orbGroup.add(orb);
-                }
-                scene.add(orbGroup);
-                
-                let time = 0;
-                let scrollY = 0;
-                
-                function animate(){
-                    requestAnimationFrame(animate);
-                    time += 0.012;
-                    scrollY += (window.scrollY * 0.008 - scrollY) * 0.1;
-                    const yOffset = Math.min(scrollY, 3.5);
-                    ring1.rotation.z = time * 0.3;
-                    ring2.rotation.x = Math.sin(time*0.4)*0.1;
-                    ring2.rotation.z = -time * 0.25;
-                    ring3.rotation.z = time * 0.45;
-                    orbGroup.rotation.y += 0.005;
-                    orbGroup.rotation.z = Math.sin(time*0.3)*0.1;
-                    
-                    // subtle camera move based on scroll
-                    camera.position.y = 0.5 + yOffset * 0.15;
-                    camera.position.x = 0.1 * Math.sin(time*0.2);
-                    camera.lookAt(0, 0.2 + yOffset*0.1, 0);
-                    
-                    renderer.render(scene, camera);
-                }
-                animate();
-                
-                window.addEventListener('resize', ()=>{
-                    camera.aspect = window.innerWidth / window.innerHeight;
-                    camera.updateProjectionMatrix();
-                    renderer.setSize(window.innerWidth, window.innerHeight);
-                });
-            }).catch(e=>{
-                console.warn("WebGL fallback");
-                const container = document.getElementById('canvas-container');
-                if(container) container.style.display = 'none';
-            });
-        })();
-        
-        // simple burger menu and scroll nav
-        document.addEventListener('DOMContentLoaded',()=>{
-            const burger = document.getElementById('burgerMenu');
-            const nav = document.getElementById('mainNav');
-            if(burger && nav){
-                burger.addEventListener('click',()=> nav.classList.toggle('active'));
-            }
-            document.querySelectorAll('.nav__link').forEach(link=>{
-                link.addEventListener('click',(e)=>{
-                    const href = link.getAttribute('href');
-                    if(href && href.startsWith('#')){
-                        e.preventDefault();
-                        const target = document.querySelector(href);
-                        if(target){
-                            target.scrollIntoView({behavior:'smooth'});
-                            if(nav) nav.classList.remove('active');
-                        }
-                    }
-                });
-            });
-            // form submission with fetch fallback
-            const form = document.getElementById('contact-form');
-            if(form){
-                form.addEventListener('submit', async (e)=>{
-                    e.preventDefault();
-                    const btn = form.querySelector('.form__submit');
-                    const originalText = btn.innerHTML;
-                    btn.innerHTML = '⏳ Отправка...';
-                    btn.disabled = true;
-                    try{
-                        const formData = new FormData(form);
-                        const response = await fetch(form.action, { method: 'POST', body: formData, mode: 'no-cors' });
-                        alert('Сообщение отправлено! Я свяжусь с вами.');
-                        form.reset();
-                    }catch(err){
-                        alert('Ошибка, но сообщение может быть отправлено. Свяжитесь в Telegram.');
-                    }finally{
-                        btn.innerHTML = originalText;
-                        btn.disabled = false;
-                    }
-                });
-            }
-        });
-    </script>
-    <!-- load aos after content -->
-    <script async src="https://cdn.usal.dev/latest"></script>
 </body>
-</html>
+</html> 

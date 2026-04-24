@@ -3,192 +3,419 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>3D Текст с эффектом объёма и перспективы | CSS Only</title>
+    <title>Матричный дождь из символов | CSS + JS | Эффект столбцов</title>
     <style>
-        *, *::before, *::after {
+        * {
+            margin: 0;
             padding: 0;
-            margin: 0 auto;
             box-sizing: border-box;
+            user-select: none; /* чтобы нельзя было выделить символы как текст */
         }
 
         body {
             background-color: black;
+            min-height: 100vh;
+            overflow: hidden;       /* скрываем скролл, чтобы ничего не вылезало */
+            font-family: 'Courier New', 'Fira Code', monospace;
+            font-weight: bold;
+        }
+
+        /* Главный контейнер, который занимает весь вьюпорт и позиционирует колонки абсолютно */
+        .matrix-rain {
+            position: relative;
+            width: 100vw;
             height: 100vh;
-            display: grid;
-            grid-template: repeat(15, 1fr)/repeat(15, 1fr);
             overflow: hidden;
+            background-color: #000000;
         }
 
-        .cell {
-            width: 100%;
-            height: 100%;
-            z-index: 2;
-        }
-
-        /* Все позиции ячеек */
-        .cell:nth-child(15n+1):hover ~ .content { --positionX: 0; }
-        .cell:nth-child(n+1):nth-child(-n+15):hover ~ .content { --positionY: 0; }
-        .cell:nth-child(15n+2):hover ~ .content { --positionX: 1; }
-        .cell:nth-child(n+16):nth-child(-n+30):hover ~ .content { --positionY: 1; }
-        .cell:nth-child(15n+3):hover ~ .content { --positionX: 2; }
-        .cell:nth-child(n+31):nth-child(-n+45):hover ~ .content { --positionY: 2; }
-        .cell:nth-child(15n+4):hover ~ .content { --positionX: 3; }
-        .cell:nth-child(n+46):nth-child(-n+60):hover ~ .content { --positionY: 3; }
-        .cell:nth-child(15n+5):hover ~ .content { --positionX: 4; }
-        .cell:nth-child(n+61):nth-child(-n+75):hover ~ .content { --positionY: 4; }
-        .cell:nth-child(15n+6):hover ~ .content { --positionX: 5; }
-        .cell:nth-child(n+76):nth-child(-n+90):hover ~ .content { --positionY: 5; }
-        .cell:nth-child(15n+7):hover ~ .content { --positionX: 6; }
-        .cell:nth-child(n+91):nth-child(-n+105):hover ~ .content { --positionY: 6; }
-        .cell:nth-child(15n+8):hover ~ .content { --positionX: 7; }
-        .cell:nth-child(n+106):nth-child(-n+120):hover ~ .content { --positionY: 7; }
-        .cell:nth-child(15n+9):hover ~ .content { --positionX: 8; }
-        .cell:nth-child(n+121):nth-child(-n+135):hover ~ .content { --positionY: 8; }
-        .cell:nth-child(15n+10):hover ~ .content { --positionX: 9; }
-        .cell:nth-child(n+136):nth-child(-n+150):hover ~ .content { --positionY: 9; }
-        .cell:nth-child(15n+11):hover ~ .content { --positionX: 10; }
-        .cell:nth-child(n+151):nth-child(-n+165):hover ~ .content { --positionY: 10; }
-        .cell:nth-child(15n+12):hover ~ .content { --positionX: 11; }
-        .cell:nth-child(n+166):nth-child(-n+180):hover ~ .content { --positionY: 11; }
-        .cell:nth-child(15n+13):hover ~ .content { --positionX: 12; }
-        .cell:nth-child(n+181):nth-child(-n+195):hover ~ .content { --positionY: 12; }
-        .cell:nth-child(15n+14):hover ~ .content { --positionX: 13; }
-        .cell:nth-child(n+196):nth-child(-n+210):hover ~ .content { --positionY: 13; }
-        .cell:nth-child(15n+15):hover ~ .content { --positionX: 14; }
-        .cell:nth-child(n+211):nth-child(-n+225):hover ~ .content { --positionY: 14; }
-
-        .content {
-            --positionX: 7;
-            --positionY: 7;
+        /* Каждая колонка — независимый блок с вертикальным расположением символов */
+        .column {
             position: absolute;
             top: 0;
-            right: 0;
-            bottom: 0;
-            left: 0;
+            /* ширина будет задана через JS, но для надёжности используем display: flex;
+               выстраиваем символы в столбец друг под другом */
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
+            justify-content: flex-start;
+            /* Никакого фона, символы на черном */
+            pointer-events: none;   /* чтобы не мешали кликам, чисто визуал */
+            will-change: transform;
+            /* Плавность перемещения */
+            transition: transform 0.02s linear; /* микро-плавность, но движение в основном через js-обновление top */
         }
 
-        .css {
-            font-family: 'Poppins', 'Impact', 'Arial Black', sans-serif;
-            position: absolute;
-            font-weight: 900;
-            top: 50%;
-            left: 50%;
-            animation: color 3s infinite linear;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            text-shadow: 0 0 15px rgba(0,0,0,0.5);
-            transition: all 0.5s;
-            white-space: nowrap;
-            font-size: 150px;
-        }
-        
-        /* УМЕРЕННОЕ РАССТОЯНИЕ МЕЖДУ СЛОЯМИ - идеальный баланс */
-        .css:nth-child(1) { 
-            animation-delay: 0s; 
-            opacity: 0.15;
-            transform: translateX(calc(-50% - (var(--positionX) - 7) * 8px)) translateY(calc(-50% - (var(--positionY) - 7) * 8px)) rotateX(calc(0deg - (var(--positionY) - 7) * 1.5deg)) rotateY(calc((var(--positionX) - 7) * 1.5deg)); 
-        }
-        .css:nth-child(2) { 
-            animation-delay: -0.3s; 
-            opacity: 0.25;
-            transform: translateX(calc(-50% - (var(--positionX) - 7) * 7px)) translateY(calc(-50% - (var(--positionY) - 7) * 7px)) rotateX(calc(0deg - (var(--positionY) - 7) * 1.5deg)) rotateY(calc((var(--positionX) - 7) * 1.5deg)); 
-        }
-        .css:nth-child(3) { 
-            animation-delay: -0.6s; 
-            opacity: 0.35;
-            transform: translateX(calc(-50% - (var(--positionX) - 7) * 6px)) translateY(calc(-50% - (var(--positionY) - 7) * 6px)) rotateX(calc(0deg - (var(--positionY) - 7) * 1.5deg)) rotateY(calc((var(--positionX) - 7) * 1.5deg)); 
-        }
-        .css:nth-child(4) { 
-            animation-delay: -0.9s; 
-            opacity: 0.45;
-            transform: translateX(calc(-50% - (var(--positionX) - 7) * 5px)) translateY(calc(-50% - (var(--positionY) - 7) * 5px)) rotateX(calc(0deg - (var(--positionY) - 7) * 1.5deg)) rotateY(calc((var(--positionX) - 7) * 1.5deg)); 
-        }
-        .css:nth-child(5) { 
-            animation-delay: -1.2s; 
-            opacity: 0.55;
-            transform: translateX(calc(-50% - (var(--positionX) - 7) * 4px)) translateY(calc(-50% - (var(--positionY) - 7) * 4px)) rotateX(calc(0deg - (var(--positionY) - 7) * 1.5deg)) rotateY(calc((var(--positionX) - 7) * 1.5deg)); 
-        }
-        .css:nth-child(6) { 
-            animation-delay: -1.5s; 
-            opacity: 0.65;
-            transform: translateX(calc(-50% - (var(--positionX) - 7) * 3px)) translateY(calc(-50% - (var(--positionY) - 7) * 3px)) rotateX(calc(0deg - (var(--positionY) - 7) * 1.5deg)) rotateY(calc((var(--positionX) - 7) * 1.5deg)); 
-        }
-        .css:nth-child(7) { 
-            animation-delay: -1.8s; 
-            opacity: 0.75;
-            transform: translateX(calc(-50% - (var(--positionX) - 7) * 2px)) translateY(calc(-50% - (var(--positionY) - 7) * 2px)) rotateX(calc(0deg - (var(--positionY) - 7) * 1.5deg)) rotateY(calc((var(--positionX) - 7) * 1.5deg)); 
-        }
-        .css:nth-child(8) { 
-            animation-delay: -2.1s; 
-            opacity: 0.85;
-            transform: translateX(calc(-50% - (var(--positionX) - 7) * 1px)) translateY(calc(-50% - (var(--positionY) - 7) * 1px)) rotateX(calc(0deg - (var(--positionY) - 7) * 1.5deg)) rotateY(calc((var(--positionX) - 7) * 1.5deg)); 
-        }
-        .css:nth-child(9) { 
-            animation-delay: -2.4s; 
-            opacity: 0.93;
-            transform: translateX(calc(-50% - (var(--positionX) - 7) * 0.5px)) translateY(calc(-50% - (var(--positionY) - 7) * 0.5px)) rotateX(calc(0deg - (var(--positionY) - 7) * 1.5deg)) rotateY(calc((var(--positionX) - 7) * 1.5deg)); 
-        }
-        .css:nth-child(10) { 
-            animation-delay: -2.7s; 
-            opacity: 1;
-            transform: translateX(calc(-50% - (var(--positionX) - 7) * 0px)) translateY(calc(-50% - (var(--positionY) - 7) * 0px)) rotateX(calc(0deg - (var(--positionY) - 7) * 1.5deg)) rotateY(calc((var(--positionX) - 7) * 1.5deg)); 
-        }
-        
-        @keyframes color {
-            0% { color: hsl(0, 75%, 65%); }
-            10% { color: hsl(36, 75%, 65%); }
-            20% { color: hsl(72, 75%, 65%); }
-            30% { color: hsl(108, 75%, 65%); }
-            40% { color: hsl(144, 75%, 65%); }
-            50% { color: hsl(180, 75%, 65%); }
-            60% { color: hsl(216, 75%, 65%); }
-            70% { color: hsl(252, 75%, 65%); }
-            80% { color: hsl(288, 75%, 65%); }
-            90% { color: hsl(324, 75%, 65%); }
-            100% { color: hsl(0, 75%, 65%); }
+        /* Базовый стиль для каждого символа внутри колонки */
+        .char {
+            font-size: 12px;       /* адаптивный размер относительно ширины экрана */
+            line-height: 1.2;
+            white-space: pre;
+            font-weight: 600;
+            text-shadow: 0 0 3px rgba(0, 255, 0, 0.3);
+            transition: color 0.1s ease;
+            display: block;
+            text-align: center;
         }
 
-        /* Адаптация для мобильных */
-        @media (max-width: 700px) {
-            .css {
-                font-size: 80px;
+        /* Для мобильных устройств чуть увеличим шрифт для читаемости */
+        @media (max-width: 768px) {
+            .char {
+                font-size: 4.5vw;
+                line-height: 1.1;
             }
-            .css:nth-child(1) { transform: translateX(calc(-50% - (var(--positionX) - 7) * 5px)) translateY(calc(-50% - (var(--positionY) - 7) * 5px)) rotateX(calc(0deg - (var(--positionY) - 7) * 1deg)) rotateY(calc((var(--positionX) - 7) * 1deg)); }
-            .css:nth-child(2) { transform: translateX(calc(-50% - (var(--positionX) - 7) * 4.4px)) translateY(calc(-50% - (var(--positionY) - 7) * 4.4px)) rotateX(calc(0deg - (var(--positionY) - 7) * 1deg)) rotateY(calc((var(--positionX) - 7) * 1deg)); }
-            .css:nth-child(3) { transform: translateX(calc(-50% - (var(--positionX) - 7) * 3.8px)) translateY(calc(-50% - (var(--positionY) - 7) * 3.8px)) rotateX(calc(0deg - (var(--positionY) - 7) * 1deg)) rotateY(calc((var(--positionX) - 7) * 1deg)); }
-            .css:nth-child(4) { transform: translateX(calc(-50% - (var(--positionX) - 7) * 3.2px)) translateY(calc(-50% - (var(--positionY) - 7) * 3.2px)) rotateX(calc(0deg - (var(--positionY) - 7) * 1deg)) rotateY(calc((var(--positionX) - 7) * 1deg)); }
-            .css:nth-child(5) { transform: translateX(calc(-50% - (var(--positionX) - 7) * 2.6px)) translateY(calc(-50% - (var(--positionY) - 7) * 2.6px)) rotateX(calc(0deg - (var(--positionY) - 7) * 1deg)) rotateY(calc((var(--positionX) - 7) * 1deg)); }
-            .css:nth-child(6) { transform: translateX(calc(-50% - (var(--positionX) - 7) * 2px)) translateY(calc(-50% - (var(--positionY) - 7) * 2px)) rotateX(calc(0deg - (var(--positionY) - 7) * 1deg)) rotateY(calc((var(--positionX) - 7) * 1deg)); }
-            .css:nth-child(7) { transform: translateX(calc(-50% - (var(--positionX) - 7) * 1.4px)) translateY(calc(-50% - (var(--positionY) - 7) * 1.4px)) rotateX(calc(0deg - (var(--positionY) - 7) * 1deg)) rotateY(calc((var(--positionX) - 7) * 1deg)); }
-            .css:nth-child(8) { transform: translateX(calc(-50% - (var(--positionX) - 7) * 0.8px)) translateY(calc(-50% - (var(--positionY) - 7) * 0.8px)) rotateX(calc(0deg - (var(--positionY) - 7) * 1deg)) rotateY(calc((var(--positionX) - 7) * 1deg)); }
-            .css:nth-child(9) { transform: translateX(calc(-50% - (var(--positionX) - 7) * 0.3px)) translateY(calc(-50% - (var(--positionY) - 7) * 0.3px)) rotateX(calc(0deg - (var(--positionY) - 7) * 1deg)) rotateY(calc((var(--positionX) - 7) * 1deg)); }
         }
+
+        @media (max-width: 480px) {
+            .char {
+                font-size: 6vw;
+            }
+        }
+
+        /* Эффект свечения нижней части — но основной градиент яркости управляется через JS/стили inline.
+           Классы для динамического изменения яркости не нужны, т.к. цвет каждому символу задаётся индивидуально.
+           Но чтобы сохранить преимущества CSS-структуры, мы будем назначать цвет символа через style в JS.
+           Однако столбец целиком имеет фон: прозрачный. */
         
-        @media (max-width: 500px) {
-            .css {
-                font-size: 50px;
-            }
-        }
+        /* Анимация мерцания для особого шарма — лёгкое изменение opacity у самых ярких (опционально), 
+           но оставим минималистично. Добавим глобальное затемнение заднего фона */
     </style>
 </head>
 <body>
-    <!-- Ячейки для управления перспективой -->
-    <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
+<div class="matrix-rain" id="matrixRain"></div>
 
-    <div class="content">
-        <div class="css">OVERWEB</div>
-        <div class="css">OVERWEB</div>
-        <div class="css">OVERWEB</div>
-        <div class="css">OVERWEB</div>
-        <div class="css">OVERWEB</div>
-        <div class="css">OVERWEB</div>
-        <div class="css">OVERWEB</div>
-        <div class="css">OVERWEB</div>
-        <div class="css">OVERWEB</div>
-        <div class="css">OVERWEB</div>
-    </div>
+<script>
+    (function() {
+        // ---------- КОНФИГУРАЦИЯ ----------
+        const COLUMN_COUNT = 140;               // 30 столбиков
+        const MIN_LENGTH = 10;                 // минимальная длина столбца (символов)
+        const MAX_LENGTH = 20;                 // максимальная длина столбца (символов)
+        const SYMBOLS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!@#$%^&*()_+{}[]|;:,.<>?/\\~`アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンガギグゲゴザジズゼゾダヂヅデドバビブベボパピプペポ";
+        // Расширенный набор символов для крутого матричного эффекта (латиница + цифры + спецсимволы + японоподобные)
+        
+        // Скорость движения (пикселей в секунду?) будем использовать фиксированное смещение в requestAnimationFrame
+        // Стратегия: каждая колонка будет иметь позицию top, которую мы увеличиваем со своей скоростью (px/frame)
+        // Чтобы сделать разную динамику, зададим каждой колонке индивидуальную скорость (px/кадр) от 0.8 до 2.5
+        // После того, как колонка уходит за нижнюю границу (top > высота контейнера), перемещаем её обратно наверх,
+        // но при этом обновляем столбец (рандомные символы, длина) и позицию top = -длина_столбца * высота_символа
+        
+        // Получаем контейнер
+        const container = document.getElementById('matrixRain');
+        let containerWidth = window.innerWidth;
+        let containerHeight = window.innerHeight;
+        
+        // Массив для хранения объектов колонок (DOM-элементы и метаданные)
+        let columns = [];
+        
+        // Вычисляем размер символа в пикселях (высоту строки line-height в пикселях)
+        // Чтобы точно рассчитать смещения, используем динамический расчёт через временный span.
+        // Но для простоты будем получать реальную высоту символа из рендера первого созданного символа.
+        // Для точности при каждом resize пересчитываем высоту символа и перераспределяем колонки?
+        // Более просто: высота колонки = количество_символов * lineHeight.
+        // Поскольку line-height в vw или %, но нам нужно знать точную высоту в пикселях для перемещения.
+        // Получим базовый line-height (в пикселях) при помощи js, добавив калибровочный элемент.
+        
+        let charPixelHeight = 0;   // высота одного символа в px (line-height)
+        let charPixelWidth = 0;     // примерная ширина символа для отступов между колонками
+        
+        // Функция для получения реальных размеров символа
+        function measureCharacterSize() {
+            // Создаем временный элемент с такими же стилями
+            const tempDiv = document.createElement('div');
+            tempDiv.style.position = 'absolute';
+            tempDiv.style.visibility = 'hidden';
+            tempDiv.style.top = '-9999px';
+            tempDiv.style.left = '-9999px';
+            tempDiv.style.fontFamily = "'Courier New', 'Fira Code', monospace";
+            tempDiv.style.fontWeight = '600';
+            tempDiv.style.fontSize = getComputedStyle(document.body).fontSize; // но у нас .char имеет 1.8vw, надо определить актуальный размер в пикселях
+            // Самый надежный: создаем .char элемент с теми же классами
+            const tempSpan = document.createElement('span');
+            tempSpan.className = 'char';
+            tempSpan.textContent = 'A';
+            tempDiv.appendChild(tempSpan);
+            document.body.appendChild(tempDiv);
+            const rect = tempSpan.getBoundingClientRect();
+            charPixelHeight = rect.height;
+            charPixelWidth = rect.width;
+            document.body.removeChild(tempDiv);
+            
+            // fallback на случай если 0 (редко)
+            if (charPixelHeight === 0) charPixelHeight = 24;
+            if (charPixelWidth === 0) charPixelWidth = 14;
+        }
+        
+        // Функция для генерации случайного символа из набора
+        function getRandomSymbol() {
+            return SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
+        }
+        
+        // Создаёт случайную строку-столбец (массив символов) заданной длины
+        function generateRandomColumnChars(length) {
+            const chars = [];
+            for (let i = 0; i < length; i++) {
+                chars.push(getRandomSymbol());
+            }
+            return chars;
+        }
+        
+        // Обновить символы в существующем DOM-столбце (полностью перезаписать с новым содержимым и цветами)
+        // Также задаёт градиент яркости: самый нижний (индекс length-1) — белый (или ярко-белый), выше — зелёные с уменьшением яркости
+        // Предпоследний чуть тусклее, а верхушка почти чёрная (но не совсем черная, чтобы видны были, но очень темно-зелёные)
+        // Согласно ТЗ: внизу первый (самый нижний отображаемый в столбце) — самый яркий белый, остальные зелёные и чем ближе к верху, тем темнее, пока полностью чёрными.
+        // Примечание: у нас колонка рисуется сверху вниз: первый элемент в div.column — верхний символ, последний — нижний.
+        // Значит, последний символ (нижний) должен быть ярко-белый, а по мере подъёма вверх темнеем до почти черного.
+        function renderColumn(columnElement, charArray) {
+            // Очищаем элемент
+            columnElement.innerHTML = '';
+            const len = charArray.length;
+            for (let i = 0; i < len; i++) {
+                const span = document.createElement('span');
+                span.className = 'char';
+                span.textContent = charArray[i];
+                
+                // Вычисляем интенсивность: i=0 это верхний символ, i=len-1 это нижний символ.
+                // Нижний (последний) — белый. Верхний — чёрный (или очень тёмный).
+                let intensity;
+                if (i === len - 1) {
+                    // Самый нижний символ: ослепительно белый с зеленым оттенком
+                    span.style.color = '#FFFFFF';
+                    span.style.textShadow = '0 0 6px #00ff00, 0 0 2px #0f0';
+                } else {
+                    // Доля от 0 (верх) до 1 (низ, но низ уже белый, не считаем)
+                    // Для i = len-2 будет почти бело-зеленый, для i=0 почти черный
+                    const ratio = i / (len - 1);  // от 0 (верх) до 1 (низ, исключим низ)
+                    // Зеленый цвет: от самого тёмного (0,20,0) до яркого зеленого (0,255,0) но без белого
+                    // Но для красивого матричного эффекта: от #002200 до #00ff00
+                    // Верхний (ratio=0) -> #002200  (очень тёмный, почти чёрный)
+                    // Ближе к низу (ratio ≈ 0.9) -> #00cc22 или что-то яркое
+                    let r = 0;
+                    let g = Math.floor(40 + ratio * 215);  // от 40 до 255
+                    let b = 0;
+                    // Ограничим, чтобы не становился белым, только нижний особый
+                    if (g > 250) g = 240; // оставляем зелёный пик, но не белый
+                    // Для самого верхнего пусть будет очень тёмным (почти черный)
+                    if (ratio < 0.15) {
+                        g = Math.floor(15 + ratio * 30);
+                    }
+                    span.style.color = `rgb(${r}, ${g}, ${b})`;
+                    // добавляем слабое свечение если g > 100
+                    if (g > 100) {
+                        span.style.textShadow = `0 0 2px rgba(0, ${g}, 0, 0.5)`;
+                    } else {
+                        span.style.textShadow = 'none';
+                    }
+                }
+                columnElement.appendChild(span);
+            }
+        }
+        
+        // Создать новую колонку полностью (элемент + данные о символическом массиве)
+        function createColumn(xPosition, columnIndex) {
+            const length = Math.floor(Math.random() * (MAX_LENGTH - MIN_LENGTH + 1) + MIN_LENGTH);
+            const symbolsArray = generateRandomColumnChars(length);
+            
+            const columnDiv = document.createElement('div');
+            columnDiv.classList.add('column');
+            // Устанавливаем горизонтальную позицию
+            columnDiv.style.left = `${xPosition}px`;
+            // Рассчитываем динамическую высоту (позже уточним, но сделаем inline)
+            // Ширина минимальная
+            columnDiv.style.width = `${charPixelWidth + 6}px`; // небольшой запас
+            
+            // Отрендерим символы с градиентом яркости
+            renderColumn(columnDiv, symbolsArray);
+            
+            container.appendChild(columnDiv);
+            
+            // Начальная позиция по вертикали: случайная в пределах вьюпорта, но лучше чтобы они уже были распределены, 
+            // некоторые уже начали падать, некоторые наверху. Но по ТЗ: "JS будет их рандомно брать и перемещать над вьюпортом
+            // и запускать движение вниз до конца вьюпорта, и чтобы потом перемещались обратно наверх".
+            // Мы сделаем классическую анимацию падения: начальный top может быть отрицательным (за пределом сверху) или где-то в зоне видимости.
+            // Позиционируем случайно: от -высота_колонки до высоты_контейнера + 200
+            const columnHeightPx = length * charPixelHeight;
+            let startTop = Math.random() * (containerHeight + columnHeightPx) - columnHeightPx;
+            // чтобы не было слишком скучно, некоторые уже видны частично
+            columnDiv.style.top = `${startTop}px`;
+            
+            // Мета-информация
+            return {
+                element: columnDiv,
+                symbols: symbolsArray,
+                length: length,
+                speed: 0.8 + Math.random() * 2.0,   // пикселей за кадр (скорость падения)
+                top: startTop,
+                heightPx: columnHeightPx,
+                lastUpdate: performance.now()
+            };
+        }
+        
+        // Обновить символы и цвета внутри колонки, не меняя позицию (используется при возвращении наверх)
+        function refreshColumnContent(columnObj) {
+            // генерируем новую длину (может меняться)
+            const newLength = Math.floor(Math.random() * (MAX_LENGTH - MIN_LENGTH + 1) + MIN_LENGTH);
+            const newSymbols = generateRandomColumnChars(newLength);
+            columnObj.symbols = newSymbols;
+            columnObj.length = newLength;
+            columnObj.heightPx = newLength * charPixelHeight;
+            // перерендерить dom
+            renderColumn(columnObj.element, newSymbols);
+            // обновить ширину? ширина может варьироваться от символов, но оставим как есть
+        }
+        
+        // Перемещение колонки наверх после выхода за границу
+        function resetColumnToTop(columnObj) {
+            // Обновляем содержимое столбца — рандомные символы, возможно новая длина
+            refreshColumnContent(columnObj);
+            // Устанавливаем позицию сверху: отрицательное значение = полностью выше вьюпорта ( - высота колонки - случайный отступ)
+            const newTop = -(columnObj.heightPx + Math.random() * 80);
+            columnObj.top = newTop;
+            columnObj.element.style.top = `${newTop}px`;
+            // Также можно немного изменить скорость для динамики
+            columnObj.speed = 0.7 + Math.random() * 2.2;
+        }
+        
+        // Функция обновления позиций всех колонок (движение вниз)
+        function updatePositions() {
+            let needUpdate = false;
+            for (let i = 0; i < columns.length; i++) {
+                const col = columns[i];
+                // перемещаем вниз на величину скорости
+                let newTop = col.top + col.speed;
+                // проверяем: если верхняя граница колонки (newTop) + высота колонки больше высоты контейнера
+                // и колонка полностью ушла за нижний край? Условие сброса: когда верхняя часть колонки ушла ниже нижней границы
+                // но также если newTop > containerHeight, то она полностью ушла, и её пора вернуть наверх.
+                if (newTop > containerHeight) {
+                    resetColumnToTop(col);
+                    newTop = col.top; // после сброса top обновлён
+                } else {
+                    col.top = newTop;
+                }
+                // Применяем трансформацию через style.top для оптимизации
+                col.element.style.top = `${col.top}px`;
+            }
+            // запросим следующий кадр
+            requestAnimationFrame(() => updatePositions());
+        }
+        
+        // Инициализация всех 30 колонок: рассчитать ширину контейнера, распределить их равномерно
+        function initColumns() {
+            // Очищаем контейнер
+            container.innerHTML = '';
+            columns = [];
+            
+            // Пересчитываем размеры символов
+            measureCharacterSize();
+            
+            // Получаем актуальные размеры окна
+            containerWidth = window.innerWidth;
+            containerHeight = window.innerHeight;
+            
+            // Рассчитываем отступы между колонками, чтобы 30 колонок поместились с приятным интервалом
+            // Ширина символа приблизительно charPixelWidth, добавим между колонками 1.2*charPixelWidth интервала
+            const spacing = charPixelWidth * 1.6;
+            const totalWidthNeeded = COLUMN_COUNT * spacing;
+            let startX;
+            if (totalWidthNeeded < containerWidth) {
+                startX = (containerWidth - totalWidthNeeded) / 2;
+            } else {
+                startX = 10; // небольшой отступ слева
+            }
+            
+            for (let i = 0; i < COLUMN_COUNT; i++) {
+                let xPos = startX + i * spacing;
+                // гарантируем, что не вылезает за правый край
+                if (xPos + charPixelWidth > containerWidth - 5) {
+                    xPos = containerWidth - charPixelWidth - 5;
+                }
+                if (xPos < 5) xPos = 5;
+                const newColumn = createColumn(xPos, i);
+                columns.push(newColumn);
+            }
+        }
+        
+        // Обработчик изменения размера окна: пересоздаём все колонки для корректного позиционирования
+        function handleResize() {
+            // пересчитываем геометрию символов
+            measureCharacterSize();
+            containerWidth = window.innerWidth;
+            containerHeight = window.innerHeight;
+            
+            // Удаляем все старые колонки
+            for (let col of columns) {
+                if (col.element && col.element.parentNode) col.element.parentNode.removeChild(col.element);
+            }
+            // Пересоздаём
+            initColumns();
+        }
+        
+        // Дополнительная функция: чтобы немного оживить символы – время от времени можно обновлять случайный символ в каждом столбце
+        // Для эффекта "мерцания" данных как в фильме. Это создаст ощущение, что символы меняются пока падают.
+        // Запустим отдельный интервал, который рандомно меняет один символ в столбце (усиливает матричный эффект)
+        function startRandomSymbolTwinkle() {
+            setInterval(() => {
+                if (!columns.length) return;
+                // Проходим по ~ половине колонок, меняем один-два символа в каждой не затрагивая градиент яркости?
+                // Чтобы сохранить градиент яркости согласно позиции символа сверху вниз, проще перерендерить всю колонку целиком, но сохранив текущую длину.
+                // Чтобы не нарушить визуальный строй, будем брать случайный столбец и менять у него один случайный символ на новый.
+                // Это корректно отобразит цвет, так как цвет привязан к индексу символа в массиве.
+                for (let i = 0; i < columns.length / 2; i++) {
+                    const randCol = Math.floor(Math.random() * columns.length);
+                    const column = columns[randCol];
+                    if (column && column.symbols.length) {
+                        const randIndex = Math.floor(Math.random() * column.symbols.length);
+                        column.symbols[randIndex] = getRandomSymbol();
+                        // Точечно обновляем DOM без полного перерендера — эффективнее, но для поддержки красивых цветов лучше перерендерить?
+                        // Просто меняем текст нужного span
+                        const spans = column.element.querySelectorAll('.char');
+                        if (spans[randIndex]) {
+                            spans[randIndex].textContent = column.symbols[randIndex];
+                            // не меняем цвет, так как цвет уже соответствует глубине
+                        }
+                    }
+                }
+            }, 180);
+        }
+        
+        // Функция для добавления начального случайного разброса top (запуск с разными позициями)
+        function randomizeInitialPositions() {
+            for (let col of columns) {
+                const randomOffset = Math.random() * containerHeight - col.heightPx;
+                col.top = randomOffset;
+                col.element.style.top = `${randomOffset}px`;
+            }
+        }
+        
+        // Запуск анимации
+        function startRain() {
+            initColumns();
+            // Дополнительно раскидаем колонки по высоте, чтобы не все стартовали сверху
+            randomizeInitialPositions();
+            // Запускаем цикл обновления позиций
+            requestAnimationFrame(() => updatePositions());
+            // Эффект мерцания символов
+            startRandomSymbolTwinkle();
+        }
+        
+        // Обработчик resize с debounce, чтобы не тормозить
+        let resizeTimer;
+        window.addEventListener('resize', function() {
+            if (resizeTimer) clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                handleResize();
+            }, 150);
+        });
+        
+        // Запускаем дождь
+        startRain();
+        
+        // Дополнительная инициализация, если вдруг контент не успел прогрузиться
+        window.addEventListener('load', () => {
+            // перестрахуемся, если размеры еще не те
+            measureCharacterSize();
+            if (columns.length === 0) startRain();
+        });
+    })();
+</script>
 </body>
 </html>

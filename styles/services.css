@@ -16,13 +16,15 @@
 }
 
 .content__container {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     justify-content: center;
     align-items: stretch;
     gap: 2vw;
     flex-wrap: wrap;
     margin-top: 2rem;
     max-width: 1121px;
+    width: 100%;           /* Добавить */
 }
 
 .content__item {
@@ -30,17 +32,18 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    width: calc(50% - 2vw);
-    min-width: 250px;
+    width: 100%;
+    min-width: 0;          /* Добавить - важно для грида */
     gap: 2vh;
     padding: 2rem 1.5rem;
     border: 0px solid #00ff41;
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5), inset 0 0 15px rgba(0, 255, 0, 0.05);
     transition: all 0.3s ease;
     position: relative;
-    overflow: hidden;
+    overflow: hidden;      /* Убедись что есть */
     border-radius: 30px;
     background: rgb(255 255 255 / 10%);
+    box-sizing: border-box; /* Добавить */
 }
 
 /* Сканирующая полоса */
@@ -272,5 +275,6 @@
     }
     .content__container {
         gap: 20px;
+        grid-template-columns: 1fr;
     }
 }

@@ -1,6 +1,10 @@
+body {
+    background: black;
+}
+#MatrixCanvas {
+    opacity: 0.5;
+}
 .block__first {
-    overflow-x: hidden;
-    background-color: black;
     font-family: 'Share Tech Mono', monospace;
 }
 .block__second {

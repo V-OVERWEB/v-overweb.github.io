@@ -4,7 +4,7 @@
     min-height: 100vh;
     width: 100%;
     overflow: hidden;
-    z-index: 2;
+    z-index: 2;  
 }
 
 .about-content {
@@ -30,11 +30,10 @@
 
 /* Карточка обо мне */
 .about__item {
-        display: flex;
+    display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    width: 100%;
     gap: 2vh;
     padding: 2rem 1.5rem;
     border: 0px solid #00ff41;
@@ -274,7 +273,56 @@
     font-size: 0.8rem;
     font-family: monospace;
 }
+/* Добавьте эти стили для формы */
+.contacts__form {
+    max-width: 100%;
+    overflow-x: hidden; /* Защита от вылезания */
+}
 
+.contacts__form form {
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.form__group {
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 1.5rem;
+}
+
+/* Главное исправление - ширина инпутов */
+.form__input,
+.form__select,
+.form__textarea {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box; /* КЛЮЧЕВОЙ МОМЕНТ - включает padding и border в ширину */
+    display: block;
+}
+
+/* Для обертки селекта */
+.select__wrapper {
+    position: relative;
+    width: 100%;
+    display: block;
+}
+
+.form__select {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 100%;
+    cursor: pointer;
+}
+
+.select__arrow {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
 /* Адаптивность */
 @media (max-width: 1024px) {
     .about__container {

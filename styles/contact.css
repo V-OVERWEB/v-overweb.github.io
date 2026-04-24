@@ -14,11 +14,11 @@
     margin: 0 auto;
     display: flex;
     flex-direction: column;
+    width: 100%;
 }
 
 /* Форма - идентично .content__item */
 .contacts__form {
-    width: 100%;
     max-width: 550px;
     display: flex;
     flex-direction: column;

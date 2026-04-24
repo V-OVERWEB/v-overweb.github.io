@@ -388,7 +388,7 @@
     }
 
     .review__item {
-        width: 100%;
+        width: unset;
         padding: 1.5rem;
         max-width: unset;
     }
