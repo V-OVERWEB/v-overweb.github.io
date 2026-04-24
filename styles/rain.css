@@ -1,16 +1,3 @@
-
-#Matrix {
-    display: block;
-    border-radius: 4px;
-    box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 1;
-}
-/* Главный контейнер, который занимает весь вьюпорт и позиционирует колонки абсолютно */
 .matrix-rain {
     position: fixed;
     width: 100vw;
@@ -57,55 +44,10 @@
         font-size: 6vw;
     }
 }
-canvas {
-    display: block;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: 2;
-}
-.matrix-text-contacts {
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
-    font-size: 0.7rem;
-    color: rgb(255, 255, 255);
-    opacity: 0.2;
-    font-family: monospace;
-    letter-spacing: 2px;
-    z-index: 10;
-    pointer-events: none;
-}
-.matrix-text-reviews {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    font-size: 0.7rem;
-    color: rgb(255, 255, 255);
-    opacity: 0.2;
-    font-family: monospace;
-    letter-spacing: 2px;
-    z-index: 10;
-    pointer-events: none;
-}
-.block__second .matrix-text {
-    position: absolute;
-    bottom: 10px;
-    left: 10px;
-    right: 10px;
-    font-size: 10px;
-    color: rgb(255, 255, 255);
-    opacity: 0.25;
-    font-family: monospace;
-    white-space: normal;
-    word-break: break-all;
-    text-align: center;
-    letter-spacing: 2px;
-    z-index: 10;
-    pointer-events: none;
-}
+/* Эффект свечения нижней части — но основной градиент яркости управляется через JS/стили inline.
+   Классы для динамического изменения яркости не нужны, т.к. цвет каждому символу задаётся индивидуально.
+   Но чтобы сохранить преимущества CSS-структуры, мы будем назначать цвет символа через style в JS.
+   Однако столбец целиком имеет фон: прозрачный. */
 
-
+/* Анимация мерцания для особого шарма — лёгкое изменение opacity у самых ярких (опционально), 
+   но оставим минималистично. Добавим глобальное затемнение заднего фона */
