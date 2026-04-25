@@ -131,10 +131,10 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: repeating-radial-gradient(circle at 50% 50%, rgb(0 0 0 / 29%), rgba(255, 255, 255, 0.2) 0.00085px);
+    background: repeating-radial-gradient(circle at 50% 50%, rgb(0 0 0 / 29%), rgba(255, 255, 255, 0.2) 0.001px);
     pointer-events: none;
     animation: static-move 0.2s infinite;
-    mask-image: radial-gradient(circle at center, rgb(0 0 0 / 86%) 60%, transparent 95%);
+    mask-image: radial-gradient(circle at center, rgb(0 0 0 / 86%) 28%, transparent 63%);
 }
 
 .tv-effect::after {

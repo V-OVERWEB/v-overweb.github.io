@@ -5,7 +5,7 @@ const columns = document.querySelectorAll('.column');
 // Функция для запуска бесконечного цикла у одной колонки
 function startColumnRain(column, delay = 0) {
     // Случайная скорость падения от 1.2 до 2.5 секунд
-    const duration = 1.2 + Math.random() * 1.3;
+    const duration = 1.7 + Math.random() * 1.3;
     
     function fallCycle() {
         // 1. Отключаем transition и телепортируем наверх
