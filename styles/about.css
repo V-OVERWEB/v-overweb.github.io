@@ -276,7 +276,7 @@
 /* Добавьте эти стили для формы */
 .contacts__form {
     max-width: 100%;
-    overflow-x: hidden; /* Защита от вылезания */
+    backdrop-filter: blur(6px);
 }
 
 .contacts__form form {
@@ -342,7 +342,7 @@
 
 @media (max-width: 768px) {
     .about-content {
-        padding: 1rem;
+        padding: 10px;
     }
     
     .about__container {
