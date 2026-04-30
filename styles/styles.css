@@ -2,7 +2,8 @@
 
 #rain-container {
     position: fixed;
-    top: 0;
+    top: -500px;
+    opacity: 0.7;
 }
 
 .block__about {
