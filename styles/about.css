@@ -1,313 +1,307 @@
-/* ===== БЛОК ОБО МНЕ ===== */
 .block__about {
-    position: relative;
-    min-height: 100vh;
-    width: 100%;
-    overflow: hidden;
-    z-index: 2;  
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  z-index: 2;
 }
 
 .about-content {
-    position: relative;
-    padding: 2rem 3rem;
-    text-align: center;
-    min-height: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+  position: relative;
+  padding: 2rem 3rem;
+  text-align: center;
+  min-height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  @media (max-width: 768px) {
+    padding: 10px;
+  }
 }
 
 .about__container {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2vw;
-    margin-top: 2rem;
-    max-width: 1400px;
-    width: 100%;
-}
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2vw;
+  margin-top: 2rem;
+  max-width: 1400px;
+  width: 100%;
 
-.about__icon svg path,
-.about__icon svg g {
-    fill: #fff !important;
-    transition: fill 0.3s ease;
-}
+  @media (max-width: 1024px) {
+    gap: 1.5rem;
+    padding: 1rem;
+    margin: 10px;
+  }
 
-.about__icon svg {
-    filter: drop-shadow(0 0 3px #00ff41);
-}
-
-.about__icon:hover svg {
-    filter: drop-shadow(0 0 20px #00ff41);
-    animation: iconGlitch 0.4s ease-in-out;
-}
-
-.about__icon:hover svg path,
-.about__icon:hover svg g {
-    fill: #00ffaa !important;
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
 }
 
 .about__icon {
-    font-size: 48px;
-    transition: all 0.3s ease;
+  font-size: 48px;
+  transition: all 0.3s ease;
+
+  svg {
+    filter: drop-shadow(0 0 3px #00ff41);
+
+    & path,
+    & g {
+      fill: #fff !important;
+      transition: fill 0.3s ease;
+    }
+  }
+
+  &:hover {
+    svg {
+      filter: drop-shadow(0 0 20px #00ff41);
+      animation: iconGlitch 0.4s ease-in-out;
+
+      & path,
+      & g {
+        fill: #00ffaa !important;
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    font-size: 36px;
+  }
 }
 
-.common-item:hover .about__icon {
+.common-item {
+  &:hover .about__icon {
     animation: iconGlitch 0.5s ease-in-out;
+  }
+
+  @media (max-width: 1024px) {
+    padding: 1.5rem;
+
+    h2 {
+      font-size: 1.3rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    max-width: 100%;
+  }
 }
 
-/* Timeline (для опыта) */
 .about__timeline {
-    width: 100%;
-    text-align: left;
+  width: 100%;
+  text-align: left;
 }
 
 .timeline-item {
-    margin-bottom: 1.5rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px dashed rgba(0, 255, 65, 0.2);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-}
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px dashed rgba(0, 255, 65, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 
-.timeline-item:last-child {
+  &:last-child {
     border-bottom: none;
     margin-bottom: 0;
     padding-bottom: 0;
+  }
 }
 
-.timeline-year {
-    display: inline-block;
-    
-    color: #00ff41;
-    font-size: 0.8rem;
-    background: rgba(0, 255, 65, 0.1);
-    padding: 2px 8px;
-    border-radius: 4px;
-    margin-bottom: 0.5rem;
+.timeline {
+    &-year {
+      display: inline-block;
+      color: #00ff41;
+      font-size: 0.8rem;
+      background: rgba(0, 255, 65, 0.1);
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-bottom: 0.5rem;
+    }
+    &-title {
+      display: block;
+      font-weight: bold;
+      color: #ffffff;
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+
+      @media (max-width: 480px) {
+        font-size: 18px;
+      }
+    }
+    &-desc {
+      color: #b8ffb8 !important;
+      font-size: 16px !important;
+      line-height: 1.4;
+
+      @media (max-width: 480px) {
+        font-size: 14px !important;
+      }
+    }
 }
 
-.timeline-title {
-    display: block;
-    font-weight: bold;
-    color: #ffffff;
-    font-size: 1rem;
-    margin-bottom: 0.5rem;
-}
-
-.timeline-desc {
-    color: #b8ffb8 !important;
-    font-size: 16px !important;
-    line-height: 1.4;
-    
-}
-
-/* Стили для навыков */
 .about__skills {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    justify-content: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
 }
 
 .skill-tag {
-    padding: 5px 12px;
-    background: rgba(0, 255, 65, 0.1);
-    border: 1px solid #00ff41;
-    border-radius: 20px;
-    color: #fff;
-    transition: all 0.3s ease;
-    font-weight: 600;
-    font-size: 18px;
-}
+  padding: 5px 12px;
+  background: rgba(0, 255, 65, 0.1);
+  border: 1px solid #00ff41;
+  border-radius: 20px;
+  color: #fff;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  font-size: 18px;
 
-.skill-tag:hover {
+  &:hover {
     background: #00ff41;
     color: #030503;
     box-shadow: 0 0 10px #00ff41;
     transform: scale(1.05);
+  }
 }
 
 .about__stats {
-    display: grid;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  width: 100%;
+  text-align: center;
+
+  @media (max-width: 768px) {
+    gap: 1rem;
+  }
+
+  @media (max-width: 480px) {
     grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem;
-    width: 100%;
-    text-align: center;
+  }
 }
 
 .stat-item {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .stat-number {
-    font-size: 2rem;
-    font-weight: bold;
-    color: #ffffff;
-    text-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+  font-size: 2rem;
+  font-weight: bold;
+  color: #ffffff;
+  text-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+
+  @media (max-width: 768px) {
+    font-size: 1.5rem;
+  }
 }
 
 .stat-label {
-    font-size: 16px;
-    color: #88ff88;
-    margin-top: 0.25rem;
+  font-size: 16px;
+  color: #88ff88;
+  margin-top: 0.25rem;
 }
 
-/* Образование */
 .about__education {
-    width: 100%;
-    text-align: left;
+  width: 100%;
+  text-align: left;
 }
 
 .edu-item {
-    margin-bottom: 1.2rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px dashed rgba(0, 255, 65, 0.2);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-}
+  margin-bottom: 1.2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px dashed rgba(0, 255, 65, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 
-.edu-item:last-child {
+  &:last-child {
     border-bottom: none;
     margin-bottom: 0;
     padding-bottom: 0;
+  }
 }
 
 .edu-year {
-    display: inline-block;
-    
-    color: #00ff41;
-    font-size: 14px;
-    background: rgba(0, 255, 65, 0.1);
-    padding: 2px 8px;
-    border-radius: 4px;
-    margin-bottom: 0.4rem;
+  display: inline-block;
+  color: #00ff41;
+  font-size: 14px;
+  background: rgba(0, 255, 65, 0.1);
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-bottom: 0.4rem;
 }
 
 .edu-degree {
-    display: block;
-    font-weight: bold;
-    color: #ffffff;
-    font-size: 20px;
-    margin-bottom: 0.3rem;
+  display: block;
+  font-weight: bold;
+  color: #ffffff;
+  font-size: 20px;
+  margin-bottom: 0.3rem;
+
+  @media (max-width: 480px) {
+    font-size: 18px;
+  }
 }
 
 .edu-place {
-color: #88ff88 !important;
-    font-size: 0.8rem !important;
-    font-family: monospace;
-}
-/* Добавьте эти стили для формы */
-.contacts__form {
-    max-width: 100%;
-    backdrop-filter: blur(6px);
+  color: #88ff88 !important;
+  font-size: 0.8rem !important;
+  font-family: monospace;
+
+  @media (max-width: 480px) {
+    font-size: 14px !important;
+  }
 }
 
-.contacts__form form {
+.contacts__form {
+  max-width: 100%;
+
+  form {
     width: 100%;
     max-width: 100%;
     display: flex;
     flex-direction: column;
+  }
 }
 
 .form__group {
-    width: 100%;
-    max-width: 100%;
-    margin-bottom: 16px;
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: 16px;
 }
 
-/* Главное исправление - ширина инпутов */
 .form__input,
 .form__select,
 .form__textarea {
-    width: 100%;
-    max-width: 100%;
-    box-sizing: border-box; /* КЛЮЧЕВОЙ МОМЕНТ - включает padding и border в ширину */
-    display: block;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  display: block;
 }
 
-/* Для обертки селекта */
 .select__wrapper {
-    position: relative;
-    width: 100%;
-    display: block;
+  position: relative;
+  width: 100%;
+  display: block;
 }
 
 .form__select {
-    appearance: none;
-    -webkit-appearance: none;
-    width: 100%;
-    cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  cursor: pointer;
 }
 
 .select__arrow {
-    position: absolute;
-    right: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    pointer-events: none;
-}
-/* Адаптивность */
-@media (max-width: 1024px) {
-    .about__container {
-        gap: 1.5rem;
-        padding: 1rem;
-        margin: 10px;
-    }
-    
-    .common-item {
-        padding: 1.5rem;
-    }
-    
-    .common-item h2 {
-        font-size: 1.3rem;
-    }
-}
-
-@media (max-width: 768px) {
-    .about-content {
-        padding: 10px;
-    }
-    
-    .about__container {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-    }
-    
-    .common-item {
-        max-width: 100%;
-    }
-    
-    .about__stats {
-        gap: 1rem;
-    }
-    
-    .stat-number {
-        font-size: 1.5rem;
-    }
-    
-    .about__icon {
-        font-size: 36px;
-    }
-}
-
-@media (max-width: 480px) {
-    .about__stats {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    
-    .timeline-title,
-    .edu-degree {
-        font-size: 18px;
-    }
-    
-    .timeline-desc,
-    .edu-place {
-        font-size: 14px;
-    }
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
 }

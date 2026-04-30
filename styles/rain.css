@@ -1,4 +1,3 @@
-/* Контейнер для всех колонок */
 .rain-container {
     position: fixed;
     width: 100%;
@@ -6,7 +5,6 @@
     overflow: hidden;
     /* opacity: 0.6; */
 }
-/* Каждая колонка — вертикальный список символов */
 .column {
     position: absolute;
     display: flex;
@@ -15,9 +13,8 @@
     transition: transform 0s;
     will-change: transform;
     pointer-events: none;
-    top: -1000px; /* ВСЕ КОЛОНКИ СТАРТУЮТ НАД ВЬЮПОРТОМ */
+    top: -1000px;
 }
-/* Отдельный символ */
 .char {
     display: block;
     text-align: center;
@@ -26,12 +23,9 @@
     line-height: 1.2;
     white-space: pre;
 }
-/* Голова (первый символ в column-reverse = нижний) — белая, непрозрачная */
 .column .char:first-child {
     color: #ffffff;
-    /* opacity: 1 !important; */
 }
-/* Остальные символы — зелёные, с плавающей прозрачностью (задаётся в style) */
 .column .char:not(:first-child) {
     color: #46ff2e;
    

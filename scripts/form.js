@@ -6,25 +6,21 @@ const globalNotification = document.getElementById('globalNotification'); // ←
 const notificationText = document.querySelector('.notification-text'); // ← НОВАЯ СТРОКА
 const notificationIcon = document.querySelector('.notification-icon'); // ← НОВАЯ СТРОКА
 
-// Функция показа глобального уведомления
 function showNotification(type, message) {
     globalNotification.className = 'global-notification ' + type;
     notificationText.textContent = message;
     globalNotification.classList.add('show');
 }
 
-// Функция скрытия глобального уведомления
 function hideNotification() {
     globalNotification.classList.remove('show');
 }
 
-// Убираем Netlify атрибуты
 if (form) {
     form.removeAttribute('data-netlify');
     form.removeAttribute('netlify-honeypot');
 }
 
-// Функция обработки отправки
 async function handleSubmit(e) {
     e.preventDefault();
     
@@ -33,7 +29,6 @@ async function handleSubmit(e) {
         return;
     }
     
-    // ПОКАЗЫВАЕМ УВЕДОМЛЕНИЕ ОБ ОТПРАВКЕ
     showNotification('loading', 'Отправка сигнала...');
     
     submitBtn.disabled = true;
@@ -48,16 +43,12 @@ async function handleSubmit(e) {
         const result = await response.json();
         
         if (result.success) {
-            // ПОКАЗЫВАЕМ УВЕДОМЛЕНИЕ ОБ УСПЕХЕ
             showNotification('success', 'Сигнал принят! Я выйду на связь.');
             
-            // Запускаем эффект выключения телевизора
             crtEffect.classList.add('active');
             
-            // Прячем форму
             formBlock.classList.add('hidden-form');
             
-            // Ждём 5 секунд и возвращаем форму
             setTimeout(() => {
                 crtEffect.classList.remove('active');
                 formBlock.classList.remove('hidden-form');
@@ -66,7 +57,6 @@ async function handleSubmit(e) {
                 submitBtn.disabled = false;
                 form.reset();
                 
-                // СКРЫВАЕМ УВЕДОМЛЕНИЕ ПОСЛЕ ПОЯВЛЕНИЯ ФОРМЫ
                 setTimeout(() => {
                     hideNotification();
                 }, 2000);
@@ -78,11 +68,9 @@ async function handleSubmit(e) {
             }, 5000);
             
         } else {
-            // ПОКАЗЫВАЕМ УВЕДОМЛЕНИЕ ОБ ОШИБКЕ
             showNotification('error', 'Ошибка передачи: ' + (result.error || 'неизвестная ошибка'));
             submitBtn.disabled = false;
             
-            // Скрываем уведомление через 5 секунд
             setTimeout(() => {
                 hideNotification();
             }, 5000);
@@ -98,10 +86,5 @@ async function handleSubmit(e) {
     }
 }
 
-// Удаляем старый обработчик и вешаем новый
 form.removeEventListener('submit', handleSubmit);
 form.addEventListener('submit', handleSubmit);
-
-// Закрытие уведомления по клику на крестик уже работает через onclick в HTML
-
-console.log('🚀 Форма готова к работе');

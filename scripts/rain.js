@@ -1,23 +1,20 @@
-// Минимальный JS: перемещение колонок по вертикали + случайная X-позиция при каждом цикле
+const CHARS = 'KアZカQサEソFニHウJスUナMイTケLトXカWスYイRシNエBシIヌOソCノ0123456789';
 
-// Функция для управления количеством колонок
-function manageColumns() {
-    const columns = document.querySelectorAll('.column');
-    const MAX_COLUMNS = window.innerWidth < 768 ? 15 : 50;
+function createColumn() {
+    const col = document.createElement('div');
+    col.className = 'column';
     
-    if (columns.length > MAX_COLUMNS) {
-        // Удаляем лишние колонки
-        for (let i = MAX_COLUMNS; i < columns.length; i++) {
-            columns[i].remove();
-        }
+    const charCount = 15 + Math.floor(Math.random() * 15);
+    for (let i = 0; i < charCount; i++) {
+        const span = document.createElement('span');
+        span.className = 'char';
+        span.textContent = CHARS[Math.floor(Math.random() * CHARS.length)];
+        span.style.opacity = Math.max(0.12, 0.6 - i * 0.02);
+        col.appendChild(span);
     }
+    
+    return col;
 }
-
-// Сразу удаляем лишние колонки при загрузке
-manageColumns();
-
-// Получаем актуальные колонки после удаления
-let columns = document.querySelectorAll('.column');
 
 function startColumnRain(column, delay = 0) {
     const duration = 1.7 + Math.random() * 1.3;
@@ -27,12 +24,10 @@ function startColumnRain(column, delay = 0) {
         column.style.transform = `translateY(-50%)`;
         column.style.top = '-40%';
         
-        // Меняем X-позицию
         const viewportWidth = window.innerWidth;
         const columnWidth = column.offsetWidth;
         const maxX = Math.max(0, viewportWidth - columnWidth);
-        const randomX = Math.random() * maxX;
-        column.style.left = `${randomX}px`;
+        column.style.left = `${Math.random() * maxX}px`;
         
         void column.offsetHeight;
         
@@ -46,8 +41,15 @@ function startColumnRain(column, delay = 0) {
     }, delay);
 }
 
-// Запускаем только существующие колонки
-columns.forEach((col, idx) => {
-    const randomDelay = Math.random() * 3000;
-    startColumnRain(col, randomDelay);
-});
+function init() {
+    const container = document.getElementById('rain-container');
+    const count = window.innerWidth < 768 ? 15 : 40;
+    
+    for (let i = 0; i < count; i++) {
+        const col = createColumn();
+        container.appendChild(col);
+        startColumnRain(col, Math.random() * 3000);
+    }
+}
+
+init();
